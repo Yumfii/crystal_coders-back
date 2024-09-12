@@ -1,0 +1,20 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Watertracking app
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: This app is able to measure and track the amount of water you drink per day and compare it with your daily requirement.
+tags:
+  # теги, що ви будете використовувати
+servers:
+  - url: http://localhost:3000
+  - url: #посилання на задеплоєний сайт
+paths:
+  # тут будуть посилання на ендпоінти
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
