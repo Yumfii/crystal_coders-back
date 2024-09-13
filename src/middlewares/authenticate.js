@@ -1,9 +1,6 @@
 // src/middlewares/authenticate.js
 
-// src/middlewares/authenticate.js
-
 import createHttpError from 'http-errors';
-
 import { SessionsCollection } from '../db/models/session.js';
 import { UsersCollection } from '../db/models/user.js';
 
