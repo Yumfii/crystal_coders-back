@@ -5,9 +5,13 @@ const { Schema } = mongoose;
 const waterTrackingSchema = new Schema(
   {
     volume: {
-      type: String,
+      type: Number,
       required: true,
       default: '250',
+    },
+    time: {
+      type: String,
+      required: true,
     },
 
     volumeId: {
