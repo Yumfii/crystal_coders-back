@@ -9,22 +9,19 @@ import {
 import { validateBody } from '../middlewares/validateBody.js';
 // import { authenticate } from '../middlewares/authenticate.js';
 
-const router = express.Router();
-const jsonParser = express.json();
-// router.use(authenticate);
+const authRouter = express.Router();
+// authRouter.use(authenticate);
 
-router.post(
+authRouter.post(
   '/auth/register',
-  jsonParser,
   validateBody(registerUserSchema),
   ctrlWrapper(registerUserController),
 );
 
-router.post(
+authRouter.post(
   '/auth/login',
-  jsonParser,
   validateBody(loginUserSchema),
   ctrlWrapper(loginUserController),
 );
 
-export default router;
+export default authRouter;
