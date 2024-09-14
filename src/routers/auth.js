@@ -9,7 +9,6 @@ import {
   refreshUserSessionController,
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
-import { authenticate } from '../middlewares/authenticate.js';
 import { getGoogleOAuthUrlController } from '../controllers/auth.js';
 import {
   loginWithGoogleOAuthSchema,
@@ -54,7 +53,6 @@ authRouter.post(
   ctrlWrapper(requestResetEmailController),
 );
 
-authRouter.use(authenticate);
 
 authRouter.post(
   '/reset-password',
