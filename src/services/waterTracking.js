@@ -58,3 +58,29 @@ export const updateVolume = async (volumeId, payload, userId) => {
   );
   return volume;
 };
+
+// src/services/waterTracking.js
+
+export const getWaterConsumptionForDay = async (userId, date) => {
+  const waterConsumption = await WaterTrackingCollection.find({
+    userId,
+    date: {
+      $gte: new Date(date),
+      $lt: new Date(date).setHours(23, 59, 59, 999),
+    },
+  });
+
+  return waterConsumption;
+};
+
+export const getWaterConsumptionForMonth = async (userId, year, month) => {
+  const startOfMonth = new Date(year, month - 1, 1);
+  const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999);
+
+  const waterConsumption = await WaterTrackingCollection.find({
+    userId,
+    date: { $gte: startOfMonth, $lt: endOfMonth },
+  });
+
+  return waterConsumption;
+};

@@ -7,7 +7,7 @@ const waterTrackingSchema = new Schema(
     volume: {
       type: Number,
       required: true,
-      default: '250',
+      default: 250,
     },
     time: {
       type: String,
@@ -17,7 +17,7 @@ const waterTrackingSchema = new Schema(
     volumeId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'Volume',
+      ref: 'User',
     },
   },
 

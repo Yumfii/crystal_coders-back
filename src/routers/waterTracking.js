@@ -17,6 +17,8 @@ import {
   createVolumeController,
   deleteVolumeController,
   patchVolumeController,
+  getWaterForMonthController,
+  getWaterForDayController,
 } from '../controllers/waterTracking.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
@@ -39,4 +41,6 @@ router.patch(
 );
 router.delete('/:volumeId', isValidId, ctrlWrapper(deleteVolumeController));
 
+router.get('/volumes/month', ctrlWrapper(getWaterForMonthController));
+router.get('/volumes/day', ctrlWrapper(getWaterForDayController));
 export default router;

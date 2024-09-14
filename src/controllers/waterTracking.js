@@ -1,5 +1,3 @@
-// src/controllers/waterTracking.js
-
 import createHttpError from 'http-errors';
 import {
   getAllVolumes,
@@ -7,6 +5,8 @@ import {
   createVolume,
   deleteVolume,
   updateVolume,
+  getWaterConsumptionForMonth,
+  getWaterConsumptionForDay,
 } from '../services/waterTracking.js';
 
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -101,4 +101,34 @@ export const patchVolumeController = async (req, res, next) => {
     message: 'Successfully patched a contact!',
     data: result,
   });
+};
+
+export const getWaterForMonthController = async (req, res) => {
+  const { userId, year, month } = req.query;
+
+  try {
+    const waterConsumption = await getWaterConsumptionForMonth(
+      userId,
+      year,
+      month,
+    );
+    res.status(200).json(waterConsumption);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getWaterForDayController = async (req, res) => {
+  const { userId, year, month } = req.query;
+
+  try {
+    const waterConsumption = await getWaterConsumptionForDay(
+      userId,
+      year,
+      month,
+    );
+    res.status(200).json(waterConsumption);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
 };
