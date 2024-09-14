@@ -28,8 +28,6 @@ export const registerUserController = async (req, res) => {
 };
 
 export const loginUserController = async (req, res) => {
-  // console.log(req.body);
-  // console.log(req.user);
   const session = await loginUser(req.body);
 
   // console.log(session);
@@ -97,6 +95,7 @@ const setupSession = (res, session) => {
 
 export const loginWithGoogleController = async (req, res) => {
   const session = await loginOrSignupWithGoogle(req.body.code);
+
   setupSession(res, session);
 
   res.json({
