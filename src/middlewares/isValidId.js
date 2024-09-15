@@ -12,3 +12,13 @@ export const isValidId = (req, res, next) => {
 
   next();
 };
+
+export const isValidVolumeId = (req, res, next) => {
+  const { volumeId } = req.params;
+
+  if (!isValidObjectId(volumeId)) {
+    throw createHttpError(400, 'Bad Request (Invalid Id)');
+  }
+
+  next();
+};

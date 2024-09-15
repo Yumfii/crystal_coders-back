@@ -4,7 +4,10 @@ import { randomBytes } from 'crypto';
 import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 import { UsersCollection } from '../db/models/user.js';
-import { FIFTEEN_MINUTES, THIRTY_DAYS } from '../constants/index.js';
+import {
+  // FIFTEEN_MINUTES,
+  THIRTY_DAYS,
+} from '../constants/index.js';
 import { SessionsCollection } from '../db/models/session.js';
 import {
   getFullNameFromGoogleTokenPayload,
@@ -91,7 +94,8 @@ const createSession = () => {
   return {
     accessToken,
     refreshToken,
-    accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+    // accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
+    accessTokenValidUntil: new Date(Date.now() + THIRTY_DAYS),
     refreshTokenValidUntil: new Date(Date.now() + THIRTY_DAYS),
   };
 };
