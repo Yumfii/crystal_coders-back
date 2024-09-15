@@ -8,13 +8,15 @@ export const getAllVolumes = async ({
   perPage = 10,
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
-  userId,
+  // userId,
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
-  const volumesQuery = WaterTrackingCollection.find({ userId });
-  const volumesCount = await WaterTrackingCollection.find({ userId })
+  // const volumesQuery = WaterTrackingCollection.find({ userId });
+  // const volumesCount = await WaterTrackingCollection.find({ userId })
+  const volumesQuery = WaterTrackingCollection.find({});
+  const volumesCount = await WaterTrackingCollection.find({})
     .merge(volumesQuery)
     .countDocuments();
 
@@ -32,12 +34,19 @@ export const getAllVolumes = async ({
   };
 };
 
-export const getVolumeById = async (id, userId) => {
-  const volume = await WaterTrackingCollection.findOne({ _id: id, userId });
+export const getVolumeById = async (
+  id,
+  // userId
+) => {
+  const volume = await WaterTrackingCollection.findOne({
+    _id: id,
+    // userId
+  });
   return volume;
 };
 
 export const createVolume = async (payload) => {
+  // console.log(payload);
   const volume = await WaterTrackingCollection.create(payload);
   return volume;
 };
@@ -50,11 +59,21 @@ export const deleteVolume = async (volumeId) => {
   return volume;
 };
 
-export const updateVolume = async (volumeId, payload, userId) => {
+export const updateVolume = async (
+  volumeId,
+  payload,
+  // userId
+) => {
   const volume = await WaterTrackingCollection.findByIdAndUpdate(
-    { _id: volumeId, userId },
+    {
+      _id: volumeId,
+      // userId
+    },
     payload,
-    { new: true },
+    {
+      new: true,
+      // includeResultMetadata: true
+    },
   );
   return volume;
 };

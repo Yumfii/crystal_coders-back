@@ -14,11 +14,11 @@ const waterTrackingSchema = new Schema(
       required: true,
     },
 
-    volumeId: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'User',
-    },
+    // volumeId: {
+    //   type: Schema.Types.ObjectId,
+    //   required: true,
+    //   ref: 'User',
+    // },
   },
 
   {
