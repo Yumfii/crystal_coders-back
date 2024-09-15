@@ -28,9 +28,10 @@ export const startServer = () => {
       },
     }),
   );
+
+  app.use(statsRouter);
   app.use(authRouter);
   app.use(router);
-  app.use(statsRouter);
 
   app.use('/uploads', express.static(UPLOAD_DIR));
 
