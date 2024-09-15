@@ -1,13 +1,12 @@
 // src/db/models/user.js
 
-import { optional } from 'joi';
 import { model, Schema } from 'mongoose';
 
 const usersSchema = new Schema(
   {
     name: {
       type: String,
-      optional: true,
+      required: false,
     },
     email: {
       type: String,
