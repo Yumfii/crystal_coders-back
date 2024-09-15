@@ -51,7 +51,7 @@ export const patchUserController = async (req, res, next) => {
     photoUrl,
   );
 
-  console.log(updatedUser);
+  // console.log(updatedUser);
 
   // if (
   //   !updatedUser.value ||
