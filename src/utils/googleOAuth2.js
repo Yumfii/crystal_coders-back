@@ -21,7 +21,7 @@ export const generateAuthUrl = () =>
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.googleapis.com/auth/userinfo.profile',
     ],
-});
+  });
 
 export const validateCode = async (code) => {
   const response = await googleOAuthClient.getToken(code);
