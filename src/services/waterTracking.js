@@ -2,51 +2,55 @@
 import { WaterTrackingCollection } from '../db/models/waterTracking.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/index.js';
+import mongoose from 'mongoose';
+import createHttpError from 'http-errors';
 
 export const getAllVolumes = async ({
   page = 1,
   perPage = 10,
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
-  // userId,
+  userId,
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
-  // const volumesQuery = WaterTrackingCollection.find({ userId });
-  // const volumesCount = await WaterTrackingCollection.find({ userId })
-  const volumesQuery = WaterTrackingCollection.find({});
-  const volumesCount = await WaterTrackingCollection.find({})
-    .merge(volumesQuery)
-    .countDocuments();
+  try {
+    const volumes = await WaterTrackingCollection.find({ userId })
+      .skip(skip)
+      .limit(limit)
+      .sort({ [sortBy]: sortOrder })
+      .exec();
 
-  const volumes = await volumesQuery
-    .skip(skip)
-    .limit(limit)
-    .sort({ [sortBy]: sortOrder })
-    .exec();
+    const volumesCount = await WaterTrackingCollection.countDocuments({ userId });
 
-  const paginationData = calculatePaginationData(volumesCount, perPage, page);
+    const paginationData = calculatePaginationData(volumesCount, perPage, page);
 
-  return {
-    data: volumes,
-    ...paginationData,
-  };
+    return {
+      data: volumes,
+      ...paginationData,
+    };
+  } catch (error) {
+    console.error('Error fetching volumes:', error);
+    throw error;
+  }
 };
 
-export const getVolumeById = async (
-  id,
-  // userId
-) => {
-  const volume = await WaterTrackingCollection.findOne({
-    _id: id,
-    // userId
-  });
+
+export const getVolumeById = async (id, userId) => {
+  if (!mongoose.isValidObjectId(id)) {
+    console.log('Invalid ID format');
+    throw createHttpError(400, 'Invalid ID format');
+  }
+  console.log('Searching for volume with id:', id, 'and userId:', userId);
+  const volume = await WaterTrackingCollection.findOne({ _id: id, userId });
   return volume;
 };
 
+
+
 export const createVolume = async (payload) => {
-  // console.log(payload);
+  console.log('Payload for creating volume:', payload);
   const volume = await WaterTrackingCollection.create(payload);
   return volume;
 };
@@ -59,26 +63,15 @@ export const deleteVolume = async (volumeId) => {
   return volume;
 };
 
-export const updateVolume = async (
-  volumeId,
-  payload,
-  // userId
-) => {
+export const updateVolume = async (volumeId, payload, userId) => {
   const volume = await WaterTrackingCollection.findByIdAndUpdate(
-    {
-      _id: volumeId,
-      // userId
-    },
+    { _id: volumeId, userId },
     payload,
-    {
-      new: true,
-      // includeResultMetadata: true
-    },
+    { new: true },
   );
   return volume;
 };
 
-// src/services/waterTracking.js
 
 export const getWaterConsumptionForDay = async (userId, date) => {
   const waterConsumption = await WaterTrackingCollection.find({

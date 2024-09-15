@@ -15,18 +15,15 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 export const getVolumesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
-
-  // const userId = req.user._id;
-
+  const userId = req.user._id;
   const volumes = await getAllVolumes({
     page,
     perPage,
     sortBy,
     sortOrder,
-    // userId,
+    userId,
   });
-
-  // console.log('Found volumes:', volumes);
+  console.log('Found volumes:', volumes);
   res.json({
     status: 200,
     message: 'Successfully found volumes!',
@@ -35,47 +32,45 @@ export const getVolumesController = async (req, res) => {
 };
 
 export const getVolumeByIdController = async (req, res, next) => {
-  const { volumeId } = req.params;
-
-  // const userId = req.user._id;
-  const volume = await getVolumeById(
-    volumeId,
-    // userId
-  );
-
-  if (!volume) {
-    throw createHttpError(404, ' not found');
-  }
-
-  res.json({
-    status: 200,
-    message: `Successfully found volume with id ${volumeId}!`,
-    data: volume,
-  });
-};
-
-export const createVolumeController = async (req, res, next) => {
-  const paramert = req.body;
-  // const userId = req.user._id;
-
-  if (!paramert) {
-    return next(createHttpError(400, 'Missing required fields'));
-  }
-
-  // console.log(paramert);
+  const { id } = req.params;
+  const userId = req.user._id;
 
   try {
-    const volume = await createVolume(
-      // {
-      paramert,
-      // userId,
-      // }
-    );
+    const volume = await getVolumeById(id, userId);
+    if (!volume) {
+      throw createHttpError(404, 'Volume not found');
+    }
+    res.json({
+      status: 200,
+      message: `Successfully found volume with id ${id}!`,
+      data: volume,
+    });
+  } catch (err) {
+    console.error('Error:', err.message);
+    next(err);
+  }
+};
+
+
+export const createVolumeController = async (req, res, next) => {
+  const { volume, time } = req.body;
+  const userId = req.user._id;
+
+  if (!volume || !time) {
+    return next(createHttpError(400, 'Отсутствуют обязательные поля'));
+  }
+
+  try {
+    const createdVolume = await createVolume({
+      volume,
+      time,
+      userId,
+    });
 
     res.status(201).json({
       status: 201,
-      message: 'Successfully created a volume!',
-      data: volume,
+      message: 'Успешно создан объем!',
+      data: createdVolume,
     });
   } catch (err) {
     next(err);
@@ -99,13 +94,9 @@ export const deleteVolumeController = async (req, res, next) => {
 export const patchVolumeController = async (req, res, next) => {
   const { volumeId } = req.params;
 
-  // console.log({ ...req.body });
-
-  // const result = await updateVolume(volumeId, {
-  //   ...req.body,
-  // });
-
-  const result = await updateVolume(volumeId, req.body);
+  const result = await updateVolume(volumeId, {
+    ...req.body,
+  });
 
   if (!result) {
     next(createHttpError(404, 'Contact not found'));
