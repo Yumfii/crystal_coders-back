@@ -41,6 +41,6 @@ router.patch(
 );
 router.delete('/:volumeId', isValidId, ctrlWrapper(deleteVolumeController));
 
-router.get('/volumes/month', ctrlWrapper(getWaterForMonthController));
-router.get('/volumes/day', ctrlWrapper(getWaterForDayController));
+router.get('/:month', ctrlWrapper(getWaterForMonthController));
+router.get('/:day', ctrlWrapper(getWaterForDayController));
 export default router;

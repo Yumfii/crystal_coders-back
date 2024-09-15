@@ -32,38 +32,45 @@ export const getVolumesController = async (req, res) => {
 };
 
 export const getVolumeByIdController = async (req, res, next) => {
-  const { volumeId } = req.params;
+  const { id } = req.params;
   const userId = req.user._id;
-  const volume = await getVolumeById(volumeId, userId);
-  if (!volume) {
-    throw createHttpError(404, ' not found');
-  }
 
-  res.json({
-    status: 200,
-    message: `Successfully found volume with id ${volumeId}!`,
-    data: volume,
-  });
+  try {
+    const volume = await getVolumeById(id, userId);
+    if (!volume) {
+      throw createHttpError(404, 'Volume not found');
+    }
+    res.json({
+      status: 200,
+      message: `Successfully found volume with id ${id}!`,
+      data: volume,
+    });
+  } catch (err) {
+    console.error('Error:', err.message);
+    next(err);
+  }
 };
 
+
 export const createVolumeController = async (req, res, next) => {
-  const { volume } = req.body;
+  const { volume, time } = req.body;
   const userId = req.user._id;
 
-  if (!volume) {
-    return next(createHttpError(400, 'Missing required fields'));
+  if (!volume || !time) {
+    return next(createHttpError(400, 'Отсутствуют обязательные поля'));
   }
 
   try {
-    const volume = await createVolume({
+    const createdVolume = await createVolume({
       volume,
+      time,
       userId,
     });
 
     res.status(201).json({
       status: 201,
-      message: 'Successfully created a volume!',
-      data: volume,
+      message: 'Успешно создан объем!',
+      data: createdVolume,
     });
   } catch (err) {
     next(err);
