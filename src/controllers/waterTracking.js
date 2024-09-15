@@ -46,24 +46,48 @@ export const getVolumeByIdController = async (req, res, next) => {
   });
 };
 
+// export const createVolumeController = async (req, res, next) => {
+//   const { volume } = req.body;
+//   const userId = req.user._id;
+
+//   if (!volume) {
+//     return next(createHttpError(400, 'Missing required fields'));
+//   }
+
+//   try {
+//     const volume = await createVolume({
+//       volume,
+//       userId,
+//     });
+
+//     res.status(201).json({
+//       status: 201,
+//       message: 'Successfully created a volume!',
+//       data: volume,
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 export const createVolumeController = async (req, res, next) => {
   const { volume } = req.body;
   const userId = req.user._id;
 
   if (!volume) {
-    return next(createHttpError(400, 'Missing required fields'));
+    return next(createHttpError(400, 'Отсутствуют обязательные поля'));
   }
 
   try {
-    const volume = await createVolume({
+    const createdVolume = await createVolume({
       volume,
       userId,
     });
 
     res.status(201).json({
       status: 201,
-      message: 'Successfully created a volume!',
-      data: volume,
+      message: 'Успешно создан объем!',
+      data: createdVolume,
     });
   } catch (err) {
     next(err);
