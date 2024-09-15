@@ -6,12 +6,14 @@ import cors from 'cors';
 import { env } from './utils/env.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
-const PORT = Number(env('PORT', '3000'));
 import router from './routers/index.js';
-import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
 import { UPLOAD_DIR } from './constants/index.js';
 import { swaggerDocs } from './middlewares/swaggerDocs.js';
+import statsRouter from './routers/userCountStats.js';
+import authRouter from './routers/auth.js';
+
+const PORT = Number(env('PORT', '3000'));
 
 export const startServer = () => {
   const app = express();
@@ -27,6 +29,8 @@ export const startServer = () => {
       },
     }),
   );
+
+  app.use(statsRouter);
   app.use(authRouter);
   app.use(router);
 

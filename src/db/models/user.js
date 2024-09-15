@@ -17,6 +17,32 @@ const usersSchema = new Schema(
       type: String,
       required: true,
     },
+    gender: {
+      type: String,
+      enum: ['male', 'female'],
+      default: 'male',
+      required: false,
+    },
+    weight: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    sportActiveTime: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    dailyWater: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
+    avatar: {
+      type: String,
+      default: null,
+      required: false,
+    },
   },
   {
     timestamps: true,
