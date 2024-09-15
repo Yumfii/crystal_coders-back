@@ -12,6 +12,7 @@ import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
 import { UPLOAD_DIR } from './constants/index.js';
 import { swaggerDocs } from './middlewares/swaggerDocs.js';
+import statsRouter from './routers/userCountStats.js';
 
 export const startServer = () => {
   const app = express();
@@ -29,6 +30,7 @@ export const startServer = () => {
   );
   app.use(authRouter);
   app.use(router);
+  app.use(statsRouter);
 
   app.use('/uploads', express.static(UPLOAD_DIR));
 
