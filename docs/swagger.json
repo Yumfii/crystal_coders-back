@@ -463,6 +463,303 @@
           }
         }
       }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by id",
+        "operationId": "getOneUserController",
+        "description": "Get user by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65ca67e7ae7f10c88b598384"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found user with id ${userId}!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/users"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Patch contact",
+        "operationId": "patchUserController",
+        "description": "Patch contact",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "66a655d1c0ffd1fd8a7e9b84"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "name": {
+                    "description": "User name",
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "gender": {
+                    "description": "User gender",
+                    "type": "string",
+                    "enum": [
+                      "male",
+                      "female"
+                    ],
+                    "example": "male",
+                    "default": "male"
+                  },
+                  "weight": {
+                    "description": "User weight",
+                    "type": "number",
+                    "example": 80,
+                    "default": 0
+                  },
+                  "sportActiveTime": {
+                    "description": "User Sport Active Time",
+                    "type": "number",
+                    "example": 60,
+                    "default": 0
+                  },
+                  "dailyWater": {
+                    "description": "Amount of water consumed by the user throughout the day",
+                    "type": "number",
+                    "example": 1.8,
+                    "default": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patch contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully patched a contact!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/updateUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/users/count": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a List of Authorized Users",
+        "operationId": "totalUsers",
+        "description": "Get a List of Authorized Users",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "example": "name"
+            },
+            "description": "All contact's fields can be mentioned. Default value - userId"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "asc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found users!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found users!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "data",
+                        "page",
+                        "perPage",
+                        "totalItems",
+                        "totalPages",
+                        "hasNextPage",
+                        "hasPreviousPage"
+                      ],
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/users"
+                          }
+                        },
+                        "page": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "perPage": {
+                          "type": "number",
+                          "example": 10
+                        },
+                        "totalItems": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "totalPages": {
+                          "type": "number",
+                          "example": 5
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -527,6 +824,133 @@
             "description": "User id",
             "type": "string",
             "example": "65e4decdd286b30065d54af9"
+          }
+        }
+      },
+      "users": {
+        "type": "object",
+        "required": [
+          "userId",
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "userId": {
+            "description": "User's id",
+            "type": "string",
+            "example": "66995563aac8191253f0bfd8"
+          },
+          "name": {
+            "description": "User name",
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "description": "User email",
+            "type": "string",
+            "example": "johndoe@example.com"
+          },
+          "password": {
+            "description": "Password for registration and login",
+            "type": "string",
+            "example": "johndoe12345"
+          },
+          "gender": {
+            "description": "User gender",
+            "type": "string",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "example": "male",
+            "default": "male"
+          },
+          "weight": {
+            "description": "User weight",
+            "type": "number",
+            "example": 80,
+            "default": 0
+          },
+          "sportActiveTime": {
+            "description": "User Sport Active Time",
+            "type": "number",
+            "example": 60,
+            "default": 0
+          },
+          "dailyWater": {
+            "description": "Amount of water consumed by the user throughout the day",
+            "type": "number",
+            "example": 1.8,
+            "default": 0
+          },
+          "avatar": {
+            "description": "Link to contact photo",
+            "type": "string",
+            "example": "https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg",
+            "default": null
+          }
+        }
+      },
+      "updateUser": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "userId": {
+            "description": "User's id",
+            "type": "string",
+            "example": "66995563aac8191253f0bfd8"
+          },
+          "name": {
+            "description": "User name",
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "description": "User email",
+            "type": "string",
+            "example": "johndoe@example.com"
+          },
+          "password": {
+            "description": "Password for registration and login",
+            "type": "string",
+            "example": "johndoe12345"
+          },
+          "gender": {
+            "description": "User gender",
+            "type": "string",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "example": "male",
+            "default": "male"
+          },
+          "weight": {
+            "description": "User weight",
+            "type": "number",
+            "example": 80,
+            "default": 0
+          },
+          "sportActiveTime": {
+            "description": "User Sport Active Time",
+            "type": "number",
+            "example": 60,
+            "default": 0
+          },
+          "dailyWater": {
+            "description": "Amount of water consumed by the user throughout the day",
+            "type": "number",
+            "example": 1.8,
+            "default": 0
+          },
+          "avatar": {
+            "description": "Link to contact photo",
+            "type": "string",
+            "example": "https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg",
+            "default": null
           }
         }
       }
