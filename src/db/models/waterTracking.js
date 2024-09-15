@@ -19,6 +19,7 @@ const waterTrackingSchema = new Schema(
       required: false,
       ref: 'User',
     },
+    userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
   },
 
   {
