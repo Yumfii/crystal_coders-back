@@ -22,7 +22,7 @@ export function idAndNameReturn(payload) {
     idPhoto: file,
   };
 }
-// Приклад використання:
+
 // idAndNameReturn(
 //   'https://res.cloudinary.com/dr0xueg6r/image/upload/v1726026334/lhi7v9mcmea8ptk97wvz.jpg',
 // );
