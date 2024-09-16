@@ -1,83 +1,22 @@
 tags:
   - Users
-summary: Get a List of Authorized Users
+summary: Get the total number of users
 operationId: totalUsers
-description: 'Get a List of Authorized Users'
+description: Returns the total number of registered users in the database.
 security:
   - bearerAuth: []
-parameters:
-  - in: query
-    name: page
-    schema:
-      type: integer
-    example: 1
-  - in: query
-    name: perPage
-    schema:
-      type: integer
-      example: 10
-  - in: query
-    name: sortBy
-    schema:
-      type: string
-      example: 'name'
-    description: "All contact's fields can be mentioned. Default value - userId"
-  - in: query
-    name: sortOrder
-    schema:
-      type: string
-      enum: ['asc', 'desc']
-      example: 'asc'
 responses:
   '200':
-    description: Successfully found users!
+    description: Successful response with the total number of users
     content:
       application/json:
         schema:
           type: object
-          required:
-            - status
-            - message
-            - data
           properties:
-            status:
+            totalUsers:
               type: integer
-              example: 200
-            message:
-              type: string
-              example: Successfully found users!
-            data:
-              type: object
-              required:
-                - data
-                - page
-                - perPage
-                - totalItems
-                - totalPages
-                - hasNextPage
-                - hasPreviousPage
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '..\..\components\schemas\users.yaml'
-                page:
-                  type: number
-                  example: 2
-                perPage:
-                  type: number
-                  example: 10
-                totalItems:
-                  type: number
-                  example: 50
-                totalPages:
-                  type: number
-                  example: 5
-                hasNextPage:
-                  type: boolean
-                  example: false
-                hasPreviousPage:
-                  type: boolean
-                  example: true
-  '401':
-    $ref: '../../components/responses/401.yaml'
+              example: 120
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'
