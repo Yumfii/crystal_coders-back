@@ -9,7 +9,7 @@ import {
 } from '../validation/waterTracking.js';
 import { authenticate } from '../middlewares/authenticate.js';
 
-import { isValidId } from '../middlewares/isValidId.js';
+import { isValidId, isValidVolumeId } from '../middlewares/isValidId.js';
 
 import {
   getVolumesController,
@@ -27,7 +27,7 @@ const router = Router();
 router.use(authenticate);
 
 router.get('/', ctrlWrapper(getVolumesController));
-router.get('/:volumeId', isValidId, ctrlWrapper(getVolumeByIdController));
+router.get('/:volumeId', isValidVolumeId, ctrlWrapper(getVolumeByIdController));
 router.post(
   '/',
   validateBody(createVolumeSchema),
@@ -35,12 +35,22 @@ router.post(
 );
 router.patch(
   '/:volumeId',
-  isValidId,
+  isValidVolumeId,
   validateBody(updateVolumeSchema),
   ctrlWrapper(patchVolumeController),
 );
-router.delete('/:volumeId', isValidId, ctrlWrapper(deleteVolumeController));
+router.delete(
+  '/:volumeId',
+  isValidVolumeId,
+  ctrlWrapper(deleteVolumeController),
+);
 
-router.get('/:month', ctrlWrapper(getWaterForMonthController));
-router.get('/:day', ctrlWrapper(getWaterForDayController));
+router.get('/:month', isValidId, ctrlWrapper(getWaterForMonthController));
+router.get(
+  '/:day',
+  isValidId,
+
+  ctrlWrapper(getWaterForDayController),
+);
+
 export default router;

@@ -22,7 +22,9 @@ export const getAllVolumes = async ({
       .sort({ [sortBy]: sortOrder })
       .exec();
 
-    const volumesCount = await WaterTrackingCollection.countDocuments({ userId });
+    const volumesCount = await WaterTrackingCollection.countDocuments({
+      userId,
+    });
 
     const paginationData = calculatePaginationData(volumesCount, perPage, page);
 
@@ -36,7 +38,6 @@ export const getAllVolumes = async ({
   }
 };
 
-
 export const getVolumeById = async (id, userId) => {
   if (!mongoose.isValidObjectId(id)) {
     console.log('Invalid ID format');
@@ -46,8 +47,6 @@ export const getVolumeById = async (id, userId) => {
   const volume = await WaterTrackingCollection.findOne({ _id: id, userId });
   return volume;
 };
-
-
 
 export const createVolume = async (payload) => {
   console.log('Payload for creating volume:', payload);
@@ -72,8 +71,14 @@ export const updateVolume = async (volumeId, payload, userId) => {
   return volume;
 };
 
-
 export const getWaterConsumptionForDay = async (userId, date) => {
+  console.log(
+    'Fetching water consumption for userId:',
+    userId,
+    'and date:',
+    date,
+  );
+
   const waterConsumption = await WaterTrackingCollection.find({
     userId,
     date: {
@@ -81,8 +86,8 @@ export const getWaterConsumptionForDay = async (userId, date) => {
       $lt: new Date(date).setHours(23, 59, 59, 999),
     },
   });
-
-  return waterConsumption;
+  console.log('day water :>> ', waterConsumption);
+  return { date, waterConsumption };
 };
 
 export const getWaterConsumptionForMonth = async (userId, year, month) => {
