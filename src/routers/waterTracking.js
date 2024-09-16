@@ -46,6 +46,6 @@ router.delete(
 );
 
 router.get('/month', ctrlWrapper(getWaterForMonthController));
-router.get('/day', ctrlWrapper(getWaterForDayController));
+router.get('/consumption/day', ctrlWrapper(getWaterForDayController));
 
 export default router;

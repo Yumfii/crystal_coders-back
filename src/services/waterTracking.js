@@ -105,7 +105,8 @@ export const getWaterConsumptionForMonth = async (userId, year, month) => {
 export const getWaterConsumptionForDay = async (userId, date) => {
   try {
     if (!userId || !date) {
-      throw createHttpError(400, 'Both date and userId are required.');
+      return null;
+      // throw createHttpError(400, 'Both date and userId are required.');
     }
 
     const startOfDay = new Date(date);
@@ -117,6 +118,8 @@ export const getWaterConsumptionForDay = async (userId, date) => {
       userId,
       time: { $gte: startOfDay, $lt: endOfDay },
     });
+
+    console.log('Volumes for the day:', volumes);
 
     const totalConsumption = volumes.reduce(
       (sum, volume) => sum + volume.liters,
