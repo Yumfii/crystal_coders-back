@@ -71,24 +71,24 @@ export const updateVolume = async (volumeId, payload, userId) => {
   return volume;
 };
 
-export const getWaterConsumptionForDay = async (userId, date) => {
-  console.log(
-    'Fetching water consumption for userId:',
-    userId,
-    'and date:',
-    date,
-  );
+// export const getWaterConsumptionForDay = async (userId, date) => {
+//   console.log(
+//     'Fetching water consumption for userId:',
+//     userId,
+//     'and date:',
+//     date,
+//   );
 
-  const waterConsumption = await WaterTrackingCollection.find({
-    userId,
-    date: {
-      $gte: new Date(date),
-      $lt: new Date(date).setHours(23, 59, 59, 999),
-    },
-  });
-  console.log('day water :>> ', waterConsumption);
-  return { date, waterConsumption };
-};
+//   const waterConsumption = await WaterTrackingCollection.find({
+//     userId,
+//     date: {
+//       $gte: new Date(date),
+//       $lt: new Date(date).setHours(23, 59, 59, 999),
+//     },
+//   });
+//   console.log('day water :>> ', waterConsumption);
+//   return { date, waterConsumption };
+// };
 
 export const getWaterConsumptionForMonth = async (userId, year, month) => {
   const startOfMonth = new Date(year, month - 1, 1);
@@ -100,4 +100,32 @@ export const getWaterConsumptionForMonth = async (userId, year, month) => {
   });
 
   return waterConsumption;
+};
+
+export const getWaterConsumptionForDay = async (userId, date) => {
+  try {
+    if (!userId || !date) {
+      throw createHttpError(400, 'Both date and userId are required.');
+    }
+
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(date);
+    endOfDay.setDate(startOfDay.getDate() + 1);
+
+    const volumes = await WaterTrackingCollection.find({
+      userId,
+      time: { $gte: startOfDay, $lt: endOfDay },
+    });
+
+    const totalConsumption = volumes.reduce(
+      (sum, volume) => sum + volume.liters,
+      0,
+    );
+
+    return { date, totalConsumption };
+  } catch (error) {
+    console.error('Error fetching water consumption for day:', error);
+    throw error;
+  }
 };

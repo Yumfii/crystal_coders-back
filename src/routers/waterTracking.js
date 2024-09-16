@@ -45,12 +45,7 @@ router.delete(
   ctrlWrapper(deleteVolumeController),
 );
 
-router.get('/:month', isValidId, ctrlWrapper(getWaterForMonthController));
-router.get(
-  '/:day',
-  isValidId,
-
-  ctrlWrapper(getWaterForDayController),
-);
+router.get('/month', ctrlWrapper(getWaterForMonthController));
+router.get('/day', ctrlWrapper(getWaterForDayController));
 
 export default router;
