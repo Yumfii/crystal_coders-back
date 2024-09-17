@@ -9,7 +9,7 @@ import {
 } from '../validation/waterTracking.js';
 import { authenticate } from '../middlewares/authenticate.js';
 
-import { isValidId, isValidVolumeId } from '../middlewares/isValidId.js';
+import { isValidVolumeId } from '../middlewares/isValidId.js';
 
 import {
   getVolumesController,
@@ -45,7 +45,7 @@ router.delete(
   ctrlWrapper(deleteVolumeController),
 );
 
-router.get('/month', ctrlWrapper(getWaterForMonthController));
+router.get('/consumption/month', ctrlWrapper(getWaterForMonthController));
 router.get('/consumption/day', ctrlWrapper(getWaterForDayController));
 
 export default router;

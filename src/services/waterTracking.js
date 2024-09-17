@@ -70,65 +70,58 @@ export const updateVolume = async (volumeId, payload, userId) => {
   );
   return volume;
 };
-
-// export const getWaterConsumptionForDay = async (userId, date) => {
-//   console.log(
-//     'Fetching water consumption for userId:',
-//     userId,
-//     'and date:',
-//     date,
-//   );
-
-//   const waterConsumption = await WaterTrackingCollection.find({
-//     userId,
-//     date: {
-//       $gte: new Date(date),
-//       $lt: new Date(date).setHours(23, 59, 59, 999),
-//     },
-//   });
-//   console.log('day water :>> ', waterConsumption);
-//   return { date, waterConsumption };
-// };
-
+// ------------------------вода за месяц-----------------------------------------------------------
 export const getWaterConsumptionForMonth = async (userId, year, month) => {
+  if (!year || !month || !userId) {
+    throw createHttpError(400, 'Year, month, and userId are required');
+  }
+
   const startOfMonth = new Date(year, month - 1, 1);
-  const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999);
+  const endOfMonth = new Date(year, month, 1);
 
-  const waterConsumption = await WaterTrackingCollection.find({
-    userId,
-    date: { $gte: startOfMonth, $lt: endOfMonth },
-  });
-
-  return waterConsumption;
-};
-
-export const getWaterConsumptionForDay = async (userId, date) => {
   try {
-    if (!userId || !date) {
-      return null;
-      // throw createHttpError(400, 'Both date and userId are required.');
-    }
-
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(date);
-    endOfDay.setDate(startOfDay.getDate() + 1);
-
     const volumes = await WaterTrackingCollection.find({
       userId,
-      time: { $gte: startOfDay, $lt: endOfDay },
+      createdAt: { $gte: startOfMonth, $lt: endOfMonth },
     });
 
-    console.log('Volumes for the day:', volumes);
-
     const totalConsumption = volumes.reduce(
-      (sum, volume) => sum + volume.liters,
+      (sum, volume) => sum + volume.volume,
       0,
     );
 
+    return { year, month, totalConsumption };
+  } catch (error) {
+    console.error('Error fetching water consumption for month: ', error);
+    throw error;
+  }
+};
+// ---------------------------вода за день------------------------------------------------------
+export const getWaterConsumptionForDay = async (userId, date) => {
+  if (!date || !userId) {
+    throw createHttpError(400, 'Date and userId are required');
+  }
+
+  const startOfDay = new Date(date);
+  // const endOfDay = new Date(date);
+  // endOfDay.setDate(startOfDay.getDate() + 1);
+  const endOfDay = new Date(startOfDay);
+  endOfDay.setDate(startOfDay.getDate() + 1);
+
+  try {
+    const volumes = await WaterTrackingCollection.find({
+      userId,
+      createdAt: { $gte: startOfDay, $lt: endOfDay },
+    });
+
+    const totalConsumption = volumes.reduce(
+      (sum, volume) => sum + volume.volume,
+      0,
+    );
     return { date, totalConsumption };
   } catch (error) {
     console.error('Error fetching water consumption for day:', error);
-    throw error;
+
+    return { error: 'Error fetching water consumption for day' };
   }
 };
