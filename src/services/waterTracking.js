@@ -1,4 +1,5 @@
 // src/services/waterTracking.js
+
 import { WaterTrackingCollection } from '../db/models/waterTracking.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/index.js';
@@ -70,7 +71,8 @@ export const updateVolume = async (volumeId, payload, userId) => {
   );
   return volume;
 };
-// ------------------------вода за месяц-----------------------------------------------------------
+
+// Water per month
 export const getWaterConsumptionForMonth = async (userId, year, month) => {
   if (!year || !month || !userId) {
     throw createHttpError(400, 'Year, month, and userId are required');
@@ -96,7 +98,8 @@ export const getWaterConsumptionForMonth = async (userId, year, month) => {
     throw error;
   }
 };
-// ---------------------------вода за день------------------------------------------------------
+
+// Water per day
 export const getWaterConsumptionForDay = async (userId, date) => {
   if (!date || !userId) {
     throw createHttpError(400, 'Date and userId are required');

@@ -13,10 +13,9 @@ tags:
     description: Operations related to water tracking.
   - name: Users
     description: Operations for retrieving user data by ID.
-  # теги, що ви будете використовувати
 servers:
   - url: http://localhost:3000
-  - url: #посилання на задеплоєний сайт
+  - url: 
 paths:
   /register:
     post:

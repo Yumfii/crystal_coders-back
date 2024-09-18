@@ -1,3 +1,5 @@
+// src/controllers/auth.js
+
 import {
   registerUser,
   loginUser,
@@ -118,7 +120,6 @@ const setupSession = (res, session) => {
   });
 };
 
-// src/controllers/auth.js
 export const handleAuthCallback = async (req, res) => {
   const code = req.query.code;
 
@@ -131,7 +132,7 @@ export const handleAuthCallback = async (req, res) => {
 
     res.redirect('/tracker');
   } catch (error) {
-    console.error('Ошибка при обработке OAuth:', error);
-    res.status(500).send('Аутентификация не удалась');
+    console.error('Error processing OAuth:', error);
+    res.status(500).send('Authentication failed');
   }
 };
