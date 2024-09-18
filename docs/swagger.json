@@ -1012,6 +1012,147 @@
           }
         }
       }
+    },
+    "/consumption/month": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Get water consumption for the month.",
+        "operationId": "getWaterForMonthController",
+        "description": "Get water consumption for the month.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "required": true,
+            "description": "Year of consumption",
+            "schema": {
+              "type": "integer",
+              "example": 2023
+            }
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "required": true,
+            "description": "Month of consumption (1-12)",
+            "schema": {
+              "type": "integer",
+              "example": 8
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Water consumption retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "year": {
+                      "type": "integer"
+                    },
+                    "month": {
+                      "type": "integer"
+                    },
+                    "totalConsumption": {
+                      "type": "number",
+                      "description": "Total water consumption for the month"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/consumption/day": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Get water consumption for the day",
+        "operationId": "getWaterForDayController",
+        "description": "Get water consumption for the day",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "description": "Consumption date in the format YYYY-MM-DD",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2023-09-18"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Water consumption retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "totalConsumption": {
+                      "type": "number",
+                      "description": "Total water consumption for the day"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
     }
   },
   "components": {

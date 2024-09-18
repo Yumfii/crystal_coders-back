@@ -1,0 +1,47 @@
+tags:
+  - Watertracking
+summary: Get water consumption for the month.
+operationId: getWaterForMonthController
+description: 'Get water consumption for the month.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: query
+    name: userId
+    required: true
+    description: User ID
+    schema:
+      type: string
+  - in: query
+    name: year
+    required: true
+    description: Year of consumption
+    schema:
+      type: integer
+      example: 2023
+  - in: query
+    name: month
+    required: true
+    description: Month of consumption (1-12)
+    schema:
+      type: integer
+      example: 8
+responses:
+  '200':
+    description: Water consumption retrieved successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            year:
+              type: integer
+            month:
+              type: integer
+            totalConsumption:
+              type: number
+              description: Total water consumption for the month
+  '400':
+    $ref: '..\..\..\..\components\responses\400.yaml'
+  '500':
+    $ref: '..\..\..\..\components\responses\500.yaml'

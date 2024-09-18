@@ -1,0 +1,40 @@
+tags:
+  - Watertracking
+summary: Get water consumption for the day
+operationId: getWaterForDayController
+description: 'Get water consumption for the day'
+security:
+  - bearerAuth: []
+parameters:
+  - in: query
+    name: userId
+    required: true
+    description: User ID
+    schema:
+      type: string
+  - in: query
+    name: date
+    required: true
+    description: Consumption date in the format YYYY-MM-DD
+    schema:
+      type: string
+      format: date
+      example: '2023-09-18'
+responses:
+  '200':
+    description: Water consumption retrieved successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date
+            totalConsumption:
+              type: number
+              description: Total water consumption for the day
+  '400':
+    $ref: '..\..\..\..\components\responses\400.yaml'
+  '500':
+    $ref: '..\..\..\..\components\responses\500.yaml'
