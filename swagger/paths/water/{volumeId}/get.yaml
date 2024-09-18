@@ -1,0 +1,35 @@
+tags:
+  - Watertracking
+summary: Get water consumption by ID.
+operationId: getVolumeByIdController
+description: 'Get water consumption by ID.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: volumeId
+    description: ID of the water consumption volume.
+    required: true
+    schema:
+      type: string
+      format: uuid
+responses:
+  '200':
+    description: Successfully found volume with id!
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully found volume with id {volumeId}!
+            data:
+              $ref: '..\..\..\components\schemas\volume.yaml'
+  '400':
+    $ref: '../../../components/responses/400.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'

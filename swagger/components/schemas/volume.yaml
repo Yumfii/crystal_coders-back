@@ -1,0 +1,21 @@
+type: object
+required:
+  - volume
+  - time
+  - volumeId
+  - userId
+properties:
+  volumeId:
+    type: string
+  userId:
+    type: string
+  date:
+    type: string
+    format: date-time
+  volume:
+    type: number
+    example: 250
+    default: 250
+  time:
+    type: string
+    example: 2024-09-19T14:45:00Z
