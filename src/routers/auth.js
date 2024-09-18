@@ -1,25 +1,18 @@
-// src/routers/auth.js
 import express from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { registerUserSchema, loginUserSchema } from '../validation/auth.js';
+import { registerUserSchema, loginUserSchema, loginWithGoogleOAuthSchema, requestResetEmailSchema, resetPasswordSchema } from '../validation/auth.js';
 import {
   registerUserController,
   loginUserController,
   logoutUserController,
   refreshUserSessionController,
-} from '../controllers/auth.js';
-import { validateBody } from '../middlewares/validateBody.js';
-import { getGoogleOAuthUrlController } from '../controllers/auth.js';
-import {
-  loginWithGoogleOAuthSchema,
-  requestResetEmailSchema,
-  resetPasswordSchema,
-} from '../validation/auth.js';
-import {
+  getGoogleOAuthUrlController,
   loginWithGoogleController,
   requestResetEmailController,
   resetPasswordController,
+  handleAuthCallback
 } from '../controllers/auth.js';
+import { validateBody } from '../middlewares/validateBody.js';
 
 const authRouter = express.Router();
 
@@ -58,5 +51,7 @@ authRouter.post(
   validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
 );
+
+authRouter.get('/callback', ctrlWrapper(handleAuthCallback));
 
 export default authRouter;
