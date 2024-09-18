@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "http://127.0.0.1:3000"
     },
     {
       "url": "https://crystal-coders-back.onrender.com"
@@ -663,11 +663,352 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/400"
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "500": {
             "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/water": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Get records of water consumption by the user.",
+        "operationId": "getVolumesController",
+        "description": "Get records of water consumption by the user.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "example": "name"
+            },
+            "description": "Name field can be mentioned. Default value - _id"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "asc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found volumes!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found volumes!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/volume"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "page": {
+                          "type": "integer"
+                        },
+                        "perPage": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Creates a new water volume with the specified values.",
+        "operationId": "createVolumeController",
+        "description": "Creates a new water volume with the specified values.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "volume",
+                  "time"
+                ],
+                "properties": {
+                  "volume": {
+                    "type": "number",
+                    "example": 250,
+                    "default": 250
+                  },
+                  "time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-09-18T12:00:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Volume successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Volume successfully created!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/volume"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          }
+        }
+      }
+    },
+    "/water/{volumeId}": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Retrieves information about the water volume by ID",
+        "operationId": "getVolumeByIdController",
+        "description": "Retrieves information about the water volume by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "volumeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found volume with Id ${volumeId} !",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found volume with Id {volumeId}!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/volume"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Updates the water volume by the specified ID",
+        "operationId": "patchVolumeController",
+        "description": "Updates the water volume by the specified ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "volumeId",
+            "required": true,
+            "description": "The ID of the volume to be updated",
+            "schema": {
+              "type": "string",
+              "example": "60d5ec49b4dca3576c1c1bdf"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/volume"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully patched a volume!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully patched a volume!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/volume"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Delete water consumption volume by ID.",
+        "operationId": "deleteVolumeController",
+        "description": "Delete water consumption volume by ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "volumeId",
+            "in": "path",
+            "description": "Unique identifier of the water consumption volume",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful deletion of the water consumption volume.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 204
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -864,19 +1205,50 @@
             "default": null
           }
         }
+      },
+      "volume": {
+        "type": "object",
+        "required": [
+          "volume",
+          "time"
+        ],
+        "properties": {
+          "volumeId": {
+            "type": "string",
+            "example": "60d5ec49b4dca3576c1c1bde"
+          },
+          "userId": {
+            "type": "string",
+            "example": "60d5ec49b4dca3576c1c1bdf"
+          },
+          "volume": {
+            "type": "number",
+            "example": 250,
+            "default": 250
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-18T12:00:00Z"
+          }
+        }
       }
     },
     "responses": {
       "400": {
-        "description": "Bad Request - The request was invalid or cannot be otherwise served",
+        "description": "Invalid ID format",
         "content": {
           "application/json": {
             "schema": {
               "type": "object",
               "properties": {
-                "error": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
                   "type": "string",
-                  "example": "Invalid request parameters"
+                  "example": "Invalid ID format"
                 }
               }
             }
@@ -948,7 +1320,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User not found"
+                      "example": "Not Found Error"
                     }
                   }
                 }
