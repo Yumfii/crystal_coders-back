@@ -1,38 +1,27 @@
 tags:
   - Watertracking
-summary: Update water consumption volume by ID.
+summary: Updates the water volume by the specified ID
 operationId: patchVolumeController
-description: 'Update water consumption volume by ID.'
+description: 'Updates the water volume by the specified ID'
 security:
   - bearerAuth: []
 parameters:
   - in: path
     name: volumeId
-    description: Unique identifier of the water consumption volume.
     required: true
+    description: The ID of the volume to be updated
     schema:
       type: string
-      format: uuid
+      example: '60d5ec49b4dca3576c1c1bdf'
 requestBody:
   required: true
   content:
     application/json:
       schema:
-        type: object
-        properties:
-          volume:
-            type: number
-            description: 'Water volume'
-            example: 350
-          time:
-            type: string
-            description: 'Time of water consumption recording'
-            example: '2024-09-19T14:45:00Z'
-        additionalProperties: false
-        required: []
+        $ref: '..\..\..\components\schemas\volume.yaml'
 responses:
   '200':
-    description: 'Successful update of the water consumption volume!'
+    description: Successfully patched a volume!
     content:
       application/json:
         schema:
@@ -43,10 +32,11 @@ responses:
               example: 200
             message:
               type: string
-              example: Successful update of the water consumption volume!
+              example: 'Successfully patched a volume!'
             data:
+              type: object
               $ref: '..\..\..\components\schemas\volume.yaml'
-'400':
-$ref: '../../components/responses/400.yaml'
-'404':
-  $ref: '../../components/responses/404.yaml'
+  '404':
+    $ref: '..\..\..\components\responses\404.yaml'
+  '400':
+    $ref: '..\..\..\components\responses\400.yaml'

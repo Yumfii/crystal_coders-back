@@ -2,20 +2,18 @@ type: object
 required:
   - volume
   - time
-  - volumeId
-  - userId
 properties:
   volumeId:
     type: string
+    example: '60d5ec49b4dca3576c1c1bde'
   userId:
     type: string
-  date:
-    type: string
-    format: date-time
+    example: '60d5ec49b4dca3576c1c1bdf'
   volume:
     type: number
     example: 250
     default: 250
   time:
     type: string
-    example: 2024-09-19T14:45:00Z
+    format: date-time
+    example: '2023-09-18T12:00:00Z'

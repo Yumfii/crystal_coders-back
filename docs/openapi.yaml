@@ -46,13 +46,15 @@ paths:
   /water:
     get:
       $ref: '../swagger/paths/water/get.yaml'
+    post:
+      $ref: '../swagger/paths/water/post.yaml'
   /water/{volumeId}:
     get:
       $ref: '../swagger/paths/water/{volumeId}/get.yaml'
-    post:
-      $ref: '../swagger/paths/water/{volumeId}/post.yaml'
     patch:
       $ref: '../swagger/paths/water/{volumeId}/patch.yaml'
+    delete:
+      $ref: '../swagger/paths/water/{volumeId}/delete.yaml'
 components:
   securitySchemes:
     bearerAuth:

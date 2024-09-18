@@ -1,0 +1,43 @@
+tags:
+  - Watertracking
+summary: Creates a new water volume with the specified values.
+operationId: createVolumeController
+description: 'Creates a new water volume with the specified values.'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - volume
+          - time
+        properties:
+          volume:
+            type: number
+            example: 250
+            default: 250
+          time:
+            type: string
+            format: date-time
+            example: '2023-09-18T12:00:00Z'
+responses:
+  '201':
+    description: Volume successfully created
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: 'Volume successfully created!'
+            data:
+              type: object
+              $ref: '..\..\components\schemas\volume.yaml'
+  '400':
+    $ref: '..\..\components\responses\400.yaml'

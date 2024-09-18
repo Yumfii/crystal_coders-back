@@ -1,9 +1,12 @@
-description: Bad Request - The request was invalid or cannot be otherwise served
+description: Invalid ID format
 content:
   application/json:
     schema:
       type: object
       properties:
-        error:
+        status:
+          type: integer
+          example: 400
+        message:
           type: string
-          example: 'Invalid request parameters'
+          example: 'Invalid ID format'
