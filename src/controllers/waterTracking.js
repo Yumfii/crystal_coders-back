@@ -32,17 +32,17 @@ export const getVolumesController = async (req, res) => {
 };
 
 export const getVolumeByIdController = async (req, res, next) => {
-  const { id } = req.params;
+  const { volumeId } = req.params;
   const userId = req.user._id;
 
   try {
-    const volume = await getVolumeById(id, userId);
+    const volume = await getVolumeById(volumeId, userId);
     if (!volume) {
       throw createHttpError(404, 'Volume not found');
     }
     res.json({
       status: 200,
-      message: `Successfully found volume with id ${id}!`,
+      message: `Successfully found volume with Id ${volumeId} !`,
       data: volume,
     });
   } catch (err) {
@@ -50,7 +50,6 @@ export const getVolumeByIdController = async (req, res, next) => {
     next(err);
   }
 };
-
 
 export const createVolumeController = async (req, res, next) => {
   const { volume, time } = req.body;
@@ -125,17 +124,30 @@ export const getWaterForMonthController = async (req, res) => {
   }
 };
 
-export const getWaterForDayController = async (req, res) => {
-  const { userId, year, month } = req.query;
+// export const getWaterForDayController = async (req, res) => {
+//   const { userId, date } = req.query;
+//   console.log(`Received request for userId ${userId} on date ${date}`);
+//   try {
+//     const waterConsumption = await getWaterConsumptionForDay(userId, date);
+//     res.status(200).json(waterConsumption);
+//   } catch (error) {
+//     console.error('Error fetching water consumption:', error.message);
 
+//     res.status(500).json({ error: error });
+//   }
+// };
+
+export const getWaterForDayController = async (req, res) => {
   try {
-    const waterConsumption = await getWaterConsumptionForDay(
-      userId,
-      year,
-      month,
-    );
+    const { userId, date } = req.query;
+    console.log(`Received request for userId ${userId} on date ${date}`);
+
+    // Assuming getWaterConsumptionForDay is a function that fetches water consumption data
+    const waterConsumption = await getWaterConsumptionForDay(userId, date);
+
     res.status(200).json(waterConsumption);
   } catch (error) {
-    res.status(500).json({ error: error });
+    console.error('Error fetching water consumption:', error.message);
+    res.status(500).json({ error: error.message });
   }
 };
