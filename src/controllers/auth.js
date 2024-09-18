@@ -118,11 +118,17 @@ const setupSession = (res, session) => {
   });
 };
 
+// src/controllers/auth.js
 export const handleAuthCallback = async (req, res) => {
   const code = req.query.code;
 
   try {
     const userInfo = await getUserInfo(code);
+
+    const session = await loginOrSignupWithGoogle(userInfo);
+
+    setupSession(res, session);
+
     res.redirect('/tracker');
   } catch (error) {
     console.error('Ошибка при обработке OAuth:', error);
