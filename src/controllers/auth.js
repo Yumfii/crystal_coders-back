@@ -9,7 +9,7 @@ import {
 } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
-import { getUserInfo } from '../services/authService.js';
+// import { getUserInfo } from '../services/authService.js';
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
@@ -68,24 +68,19 @@ export const logoutUserController = async (req, res) => {
 };
 
 export const getGoogleOAuthUrlController = async (req, res) => {
-  const url = generateAuthUrl(); // Генерируем URL для Google OAuth
+  const url = generateAuthUrl();
 
-  res.redirect(url); // Вместо JSON мы сразу перенаправляем пользователя на Google
+  res.redirect(url);
 };
 
 
 export const loginWithGoogleController = async (req, res) => {
   try {
-    const session = await loginOrSignupWithGoogle(req.body.code); // Передаём код от Google для создания сессии
-    setupSession(res, session); // Устанавливаем сессию через куки
+    const code = req.query.code;
+    const session = await loginOrSignupWithGoogle(code);
+    setupSession(res, session);
 
-    res.json({
-      status: 200,
-      message: 'Successfully logged in via Google OAuth!',
-      data: {
-        accessToken: session.accessToken,
-      },
-    });
+    res.redirect('/tracker');
   } catch (error) {
     console.error('Ошибка при логине через Google:', error);
     res.status(500).json({ message: 'Ошибка при логине через Google OAuth' });
@@ -124,9 +119,7 @@ export const handleAuthCallback = async (req, res) => {
   const code = req.query.code;
 
   try {
-    const userInfo = await getUserInfo(code);
-
-    const session = await loginOrSignupWithGoogle(userInfo);
+    const session = await loginOrSignupWithGoogle(code);
 
     setupSession(res, session);
 
