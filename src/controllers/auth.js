@@ -117,15 +117,22 @@ const setupSession = (res, session) => {
 
 export const handleAuthCallback = async (req, res) => {
   const code = req.query.code;
+  const redirectUri = 'https://crystal-coders-back.onrender.com/auth/confirm-oauth';
 
   try {
-    const session = await loginOrSignupWithGoogle(code);
+    const response = await fetch(redirectUri, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
 
-    setupSession(res, session);
-
-    res.redirect('/tracker');
+    if (response.ok) {
+      res.redirect('/tracker');
+    } else {
+      res.status(500).send('Error authenticating with Google OAuth');
+    }
   } catch (error) {
-    console.error('error authorization OAuth:', error);
-    res.status(500).send('authentification error');
+    console.error(error);
+    res.status(500).send('Error authenticating with Google OAuth');
   }
 };
