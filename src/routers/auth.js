@@ -1,3 +1,5 @@
+// src/routers/auth.js
+
 import express from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { registerUserSchema, loginUserSchema, loginWithGoogleOAuthSchema, requestResetEmailSchema, resetPasswordSchema } from '../validation/auth.js';

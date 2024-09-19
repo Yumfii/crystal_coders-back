@@ -1,3 +1,6 @@
+// src/controllers/waterTracking.js
+
+
 import createHttpError from 'http-errors';
 import {
   getAllVolumes,
@@ -56,7 +59,7 @@ export const createVolumeController = async (req, res, next) => {
   const userId = req.user._id;
 
   if (!volume || !time) {
-    return next(createHttpError(400, 'Отсутствуют обязательные поля'));
+    return next(createHttpError(400, 'Required fields are missing'));
   }
 
   try {
@@ -68,7 +71,7 @@ export const createVolumeController = async (req, res, next) => {
 
     res.status(201).json({
       status: 201,
-      message: 'Успешно создан объем!',
+      message: 'Volume created successfully!',
       data: createdVolume,
     });
   } catch (err) {

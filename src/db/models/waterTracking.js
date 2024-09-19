@@ -1,4 +1,5 @@
 // src/db/models/waterTracking.js
+
 import mongoose, { model } from 'mongoose';
 const { Schema } = mongoose;
 

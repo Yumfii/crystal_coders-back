@@ -14,8 +14,9 @@ tags:
   - name: Users
     description: Operations for retrieving user data by ID.
 servers:
-  - url: http://127.0.0.1:3000
   - url: https://crystal-coders-back.onrender.com
+  - url: http://127.0.0.1:3000
+  
 paths:
   /register:
     post:

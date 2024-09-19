@@ -1,3 +1,5 @@
+// src/utils/gettingIdAndName.js
+
 function removeFileExtension(payload) {
   const dotIndex = payload.lastIndexOf('.');
   if (dotIndex !== -1) {
