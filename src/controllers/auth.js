@@ -1,19 +1,18 @@
-// src/controllers/auth.js
 import {
   registerUser,
   loginUser,
   logoutUser,
   refreshUsersSession,
+  loginOrSignupWithGoogle,
+  requestResetToken,
+  resetPassword
 } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
-import { loginOrSignupWithGoogle } from '../services/auth.js';
-import { requestResetToken } from '../services/auth.js';
-import { resetPassword } from '../services/auth.js';
+// import { getUserInfo } from '../services/authService.js';
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
-
   const session = await loginUser(req.body);
   setupSession(res, session);
 
@@ -29,14 +28,11 @@ export const registerUserController = async (req, res) => {
 
 export const loginUserController = async (req, res) => {
   const session = await loginUser(req.body);
-
-  // console.log(session);
-
   setupSession(res, session);
 
   res.json({
     status: 200,
-    message: 'Successfully logged in an user!',
+    message: 'Successfully logged in a user!',
     data: {
       accessToken: session.accessToken,
     },
@@ -60,7 +56,7 @@ export const refreshUserSessionController = async (req, res) => {
   });
 };
 
-export const logoutUserController = async (req, res, next) => {
+export const logoutUserController = async (req, res) => {
   if (req.cookies.sessionId) {
     await logoutUser(req.cookies.sessionId);
   }
@@ -73,12 +69,38 @@ export const logoutUserController = async (req, res, next) => {
 
 export const getGoogleOAuthUrlController = async (req, res) => {
   const url = generateAuthUrl();
+
+  res.redirect(url);
+};
+
+
+export const loginWithGoogleController = async (req, res) => {
+  try {
+    const code = req.body.code;
+    const session = await loginOrSignupWithGoogle(code);
+    setupSession(res, session);
+
+    res.redirect('/tracker');
+  } catch (error) {
+    console.error('Error with Google:', error);
+    res.status(500).json({ message: 'Error Google OAuth' });
+  }
+};
+
+
+export const requestResetEmailController = async (req, res) => {
+  await requestResetToken(req.body.email);
   res.json({
+    message: 'Reset password email was successfully sent!',
     status: 200,
-    message: 'Successfully get Google OAuth url!',
-    data: {
-      url,
-    },
+  });
+};
+
+export const resetPasswordController = async (req, res) => {
+  await resetPassword(req.body);
+  res.json({
+    message: 'Password was successfully reset!',
+    status: 200,
   });
 };
 
@@ -93,34 +115,24 @@ const setupSession = (res, session) => {
   });
 };
 
-export const loginWithGoogleController = async (req, res) => {
-  const session = await loginOrSignupWithGoogle(req.body.code);
+export const handleAuthCallback = async (req, res) => {
+  const code = req.query.code;
+  const redirectUri = 'https://crystal-coders-back.onrender.com/auth/confirm-oauth';
 
-  setupSession(res, session);
+  try {
+    const response = await fetch(redirectUri, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+    });
 
-  res.json({
-    status: 200,
-    message: 'Successfully logged in via Google OAuth!',
-    data: {
-      accessToken: session.accessToken,
-    },
-  });
-};
-
-export const requestResetEmailController = async (req, res) => {
-  await requestResetToken(req.body.email);
-  res.json({
-    message: 'Reset password email was successfully sent!',
-    status: 200,
-    data: {},
-  });
-};
-
-export const resetPasswordController = async (req, res) => {
-  await resetPassword(req.body);
-  res.json({
-    message: 'Password was successfully reset!',
-    status: 200,
-    data: {},
-  });
+    if (response.ok) {
+      res.redirect('/react-homework-template/tracker');
+    } else {
+      res.status(500).send('Error authenticating with Google OAuth');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error authenticating with Google OAuth');
+  }
 };

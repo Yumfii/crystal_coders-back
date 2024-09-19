@@ -1,0 +1,12 @@
+description: Server error while attempting to count users
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: 'Failed to count users'

@@ -1,9 +1,6 @@
 type: object
 required:
   - userId
-  - name
-  - email
-  - password
 properties:
   userId:
     description: "User's id"
@@ -45,5 +42,5 @@ properties:
   avatar:
     description: 'Link to contact photo'
     type: string
-    example: 'https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg'
+    example: https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg
     default: null

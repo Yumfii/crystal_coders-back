@@ -1,0 +1,28 @@
+tags:
+  - Watertracking
+summary: Delete water consumption volume by ID.
+operationId: deleteVolumeController
+description: 'Delete water consumption volume by ID.'
+security:
+  - bearerAuth: []
+parameters:
+  - name: volumeId
+    in: path
+    description: Unique identifier of the water consumption volume
+    required: true
+    schema:
+      type: string
+      format: uuid
+responses:
+  '204':
+    description: Successful deletion of the water consumption volume.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 204
+  '404':
+    $ref: '..\..\..\components\responses\404.yaml'

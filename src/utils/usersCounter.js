@@ -1,6 +1,6 @@
 // src/utils/usersCounter.js
 
-import { UsersCollection} from '../db/models/user.js';
+import { UsersCollection } from '../db/models/user.js';
 
 export const getUserCount = async () => {
   try {
