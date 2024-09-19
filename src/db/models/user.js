@@ -20,7 +20,7 @@ const usersSchema = new Schema(
     gender: {
       type: String,
       enum: ['male', 'female'],
-      default: 'male',
+      default: 'female',
       required: false,
     },
     weight: {
@@ -35,7 +35,7 @@ const usersSchema = new Schema(
     },
     dailyWater: {
       type: Number,
-      default: 0,
+      default: 2,
       required: false,
     },
     avatar: {
