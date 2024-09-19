@@ -14,8 +14,9 @@ tags:
   - name: Users
     description: Operations for retrieving user data by ID.
 servers:
-  - url: http://localhost:3000
-  - url: 
+  - url: https://crystal-coders-back.onrender.com
+  - url: http://127.0.0.1:3000
+  
 paths:
   /register:
     post:
@@ -35,6 +36,32 @@ paths:
   /reset-password:
     post:
       $ref: '../swagger/paths/auth/reset-password.yaml'
+  /users/{userId}:
+    get:
+      $ref: '../swagger/paths/users/{userId}/get.yaml'
+    patch:
+      $ref: '../swagger/paths/users/{userId}/patch.yaml'
+  /users/count:
+    get:
+      $ref: '../swagger/paths/users/get.yaml'
+  /water:
+    get:
+      $ref: '../swagger/paths/water/get.yaml'
+    post:
+      $ref: '../swagger/paths/water/post.yaml'
+  /water/{volumeId}:
+    get:
+      $ref: '../swagger/paths/water/{volumeId}/get.yaml'
+    patch:
+      $ref: '../swagger/paths/water/{volumeId}/patch.yaml'
+    delete:
+      $ref: '../swagger/paths/water/{volumeId}/delete.yaml'
+  /consumption/month:
+    get:
+      $ref: '../swagger/paths/water/consumption/month/get.yaml'
+  /consumption/day:
+    get:
+      $ref: '../swagger/paths/water/consumption/day/get.yaml'
 components:
   securitySchemes:
     bearerAuth:

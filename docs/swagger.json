@@ -11,10 +11,10 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "http://127.0.0.1:3000"
     },
     {
-      "url": null
+      "url": "https://crystal-coders-back.onrender.com"
     }
   ],
   "tags": [
@@ -463,6 +463,696 @@
           }
         }
       }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by id",
+        "operationId": "getOneUserController",
+        "description": "Get user by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65ca67e7ae7f10c88b598384"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found user with id ${userId}!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/users"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Patch contact",
+        "operationId": "patchUserController",
+        "description": "Patch contact",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "66a655d1c0ffd1fd8a7e9b84"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "name": {
+                    "description": "User name",
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "gender": {
+                    "description": "User gender",
+                    "type": "string",
+                    "enum": [
+                      "male",
+                      "female"
+                    ],
+                    "example": "male",
+                    "default": "male"
+                  },
+                  "weight": {
+                    "description": "User weight",
+                    "type": "number",
+                    "example": 80,
+                    "default": 0
+                  },
+                  "sportActiveTime": {
+                    "description": "User Sport Active Time",
+                    "type": "number",
+                    "example": 60,
+                    "default": 0
+                  },
+                  "dailyWater": {
+                    "description": "Amount of water consumed by the user throughout the day",
+                    "type": "number",
+                    "example": 1.8,
+                    "default": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Patch contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully patched a contact!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/updateUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/users/count": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get the total number of users",
+        "operationId": "totalUsers",
+        "description": "Returns the total number of registered users in the database.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the total number of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalUsers": {
+                      "type": "integer",
+                      "example": 120
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/water": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Get records of water consumption by the user.",
+        "operationId": "getVolumesController",
+        "description": "Get records of water consumption by the user.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "example": "name"
+            },
+            "description": "Name field can be mentioned. Default value - _id"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "example": "asc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found volumes!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found volumes!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/volume"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "page": {
+                          "type": "integer"
+                        },
+                        "perPage": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Creates a new water volume with the specified values.",
+        "operationId": "createVolumeController",
+        "description": "Creates a new water volume with the specified values.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "volume",
+                  "time"
+                ],
+                "properties": {
+                  "volume": {
+                    "type": "number",
+                    "example": 250,
+                    "default": 250
+                  },
+                  "time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-09-18T12:00:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Volume successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Volume successfully created!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/volume"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          }
+        }
+      }
+    },
+    "/water/{volumeId}": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Retrieves information about the water volume by ID",
+        "operationId": "getVolumeByIdController",
+        "description": "Retrieves information about the water volume by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "volumeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found volume with Id ${volumeId} !",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found volume with Id {volumeId}!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/volume"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Updates the water volume by the specified ID",
+        "operationId": "patchVolumeController",
+        "description": "Updates the water volume by the specified ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "volumeId",
+            "required": true,
+            "description": "The ID of the volume to be updated",
+            "schema": {
+              "type": "string",
+              "example": "60d5ec49b4dca3576c1c1bdf"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/volume"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully patched a volume!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully patched a volume!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/volume"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Delete water consumption volume by ID.",
+        "operationId": "deleteVolumeController",
+        "description": "Delete water consumption volume by ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "volumeId",
+            "in": "path",
+            "description": "Unique identifier of the water consumption volume",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful deletion of the water consumption volume.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 204
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    },
+    "/consumption/month": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Get water consumption for the month.",
+        "operationId": "getWaterForMonthController",
+        "description": "Get water consumption for the month.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "required": true,
+            "description": "Year of consumption",
+            "schema": {
+              "type": "integer",
+              "example": 2023
+            }
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "required": true,
+            "description": "Month of consumption (1-12)",
+            "schema": {
+              "type": "integer",
+              "example": 8
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Water consumption retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "year": {
+                      "type": "integer"
+                    },
+                    "month": {
+                      "type": "integer"
+                    },
+                    "totalConsumption": {
+                      "type": "number",
+                      "description": "Total water consumption for the month"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/consumption/day": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Get water consumption for the day",
+        "operationId": "getWaterForDayController",
+        "description": "Get water consumption for the day",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userId",
+            "required": true,
+            "description": "User ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "description": "Consumption date in the format YYYY-MM-DD",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2023-09-18"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Water consumption retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "totalConsumption": {
+                      "type": "number",
+                      "description": "Total water consumption for the day"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -529,9 +1219,183 @@
             "example": "65e4decdd286b30065d54af9"
           }
         }
+      },
+      "users": {
+        "type": "object",
+        "required": [
+          "userId",
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "userId": {
+            "description": "User's id",
+            "type": "string",
+            "example": "66995563aac8191253f0bfd8"
+          },
+          "name": {
+            "description": "User name",
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "description": "User email",
+            "type": "string",
+            "example": "johndoe@example.com"
+          },
+          "password": {
+            "description": "Password for registration and login",
+            "type": "string",
+            "example": "johndoe12345"
+          },
+          "gender": {
+            "description": "User gender",
+            "type": "string",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "example": "male",
+            "default": "male"
+          },
+          "weight": {
+            "description": "User weight",
+            "type": "number",
+            "example": 80,
+            "default": 0
+          },
+          "sportActiveTime": {
+            "description": "User Sport Active Time",
+            "type": "number",
+            "example": 60,
+            "default": 0
+          },
+          "dailyWater": {
+            "description": "Amount of water consumed by the user throughout the day",
+            "type": "number",
+            "example": 1.8,
+            "default": 0
+          },
+          "avatar": {
+            "description": "Link to contact photo",
+            "type": "string",
+            "example": "https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg",
+            "default": null
+          }
+        }
+      },
+      "updateUser": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "userId": {
+            "description": "User's id",
+            "type": "string",
+            "example": "66995563aac8191253f0bfd8"
+          },
+          "name": {
+            "description": "User name",
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "description": "User email",
+            "type": "string",
+            "example": "johndoe@example.com"
+          },
+          "password": {
+            "description": "Password for registration and login",
+            "type": "string",
+            "example": "johndoe12345"
+          },
+          "gender": {
+            "description": "User gender",
+            "type": "string",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "example": "male",
+            "default": "male"
+          },
+          "weight": {
+            "description": "User weight",
+            "type": "number",
+            "example": 80,
+            "default": 0
+          },
+          "sportActiveTime": {
+            "description": "User Sport Active Time",
+            "type": "number",
+            "example": 60,
+            "default": 0
+          },
+          "dailyWater": {
+            "description": "Amount of water consumed by the user throughout the day",
+            "type": "number",
+            "example": 1.8,
+            "default": 0
+          },
+          "avatar": {
+            "description": "Link to contact photo",
+            "type": "string",
+            "example": "https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg",
+            "default": null
+          }
+        }
+      },
+      "volume": {
+        "type": "object",
+        "required": [
+          "volume",
+          "time"
+        ],
+        "properties": {
+          "volumeId": {
+            "type": "string",
+            "example": "60d5ec49b4dca3576c1c1bde"
+          },
+          "userId": {
+            "type": "string",
+            "example": "60d5ec49b4dca3576c1c1bdf"
+          },
+          "volume": {
+            "type": "number",
+            "example": 250,
+            "default": 250
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-18T12:00:00Z"
+          }
+        }
       }
     },
     "responses": {
+      "400": {
+        "description": "Invalid ID format",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid ID format"
+                }
+              }
+            }
+          }
+        }
+      },
       "401": {
         "description": "Unauthorized error",
         "content": {
@@ -597,7 +1461,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "User not found"
+                      "example": "Not Found Error"
                     }
                   }
                 }
@@ -637,6 +1501,26 @@
                       "example": "Email in use"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Server error while attempting to count users",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Failed to count users"
                 }
               }
             }

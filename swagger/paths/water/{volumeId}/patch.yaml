@@ -1,0 +1,42 @@
+tags:
+  - Watertracking
+summary: Updates the water volume by the specified ID
+operationId: patchVolumeController
+description: 'Updates the water volume by the specified ID'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: volumeId
+    required: true
+    description: The ID of the volume to be updated
+    schema:
+      type: string
+      example: '60d5ec49b4dca3576c1c1bdf'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '..\..\..\components\schemas\volume.yaml'
+responses:
+  '200':
+    description: Successfully patched a volume!
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: 'Successfully patched a volume!'
+            data:
+              type: object
+              $ref: '..\..\..\components\schemas\volume.yaml'
+  '404':
+    $ref: '..\..\..\components\responses\404.yaml'
+  '400':
+    $ref: '..\..\..\components\responses\400.yaml'
