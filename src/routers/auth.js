@@ -56,4 +56,5 @@ authRouter.post(
 
 authRouter.get('/callback', ctrlWrapper(handleAuthCallback));
 
+
 export default authRouter;
