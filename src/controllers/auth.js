@@ -76,14 +76,14 @@ export const getGoogleOAuthUrlController = async (req, res) => {
 
 export const loginWithGoogleController = async (req, res) => {
   try {
-    const code = req.query.code;
+    const code = req.body.code;
     const session = await loginOrSignupWithGoogle(code);
     setupSession(res, session);
 
     res.redirect('/tracker');
   } catch (error) {
-    console.error('Ошибка при логине через Google:', error);
-    res.status(500).json({ message: 'Ошибка при логине через Google OAuth' });
+    console.error('Error with Google:', error);
+    res.status(500).json({ message: 'Error Google OAuth' });
   }
 };
 
@@ -127,7 +127,7 @@ export const handleAuthCallback = async (req, res) => {
     });
 
     if (response.ok) {
-      res.redirect('/tracker');
+      res.redirect('/react-homework-template/tracker');
     } else {
       res.status(500).send('Error authenticating with Google OAuth');
     }
