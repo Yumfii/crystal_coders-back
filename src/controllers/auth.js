@@ -9,7 +9,7 @@ import {
 } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
-import { validateCode } from '../utils/googleOAuth2.js';
+// import { validateCode } from '../utils/googleOAuth2.js';
 // import { getUserInfo } from '../services/authService.js';
 
 export const registerUserController = async (req, res) => {
@@ -79,11 +79,23 @@ export const loginWithGoogleController = async (req, res) => {
   try {
     const code = req.body.code;
     res.redirect(`/auth/callback?code=${code}`);
+
+    const session = await loginOrSignupWithGoogle(req.body.code);
+    setupSession(res, session);
+
+    res.json({
+      status: 200,
+      message: 'Successfully logged in via Google OAuth!',
+      data: {
+        accessToken: session.accessToken,
+      },
+    });
   } catch (error) {
     console.error('Error with Google:', error);
     res.status(500).json({ message: 'Error Google OAuth' });
   }
 };
+
 
 export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
@@ -116,11 +128,7 @@ export const handleAuthCallback = async (req, res) => {
   const code = req.query.code;
 
   try {
-    const ticket = await validateCode(code);
-    console.log(code);
-
-
-    const session = await loginOrSignupWithGoogle(ticket);
+    const session = await loginOrSignupWithGoogle(code);
 
     setupSession(res, session);
 
@@ -130,3 +138,4 @@ export const handleAuthCallback = async (req, res) => {
     res.status(500).send('Error during Google OAuth');
   }
 };
+
