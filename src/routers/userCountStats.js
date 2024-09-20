@@ -4,9 +4,9 @@ import express from 'express';
 import { getUserCount } from '../utils/usersCounter.js';
 import createHttpError from 'http-errors';
 
-const router = express.Router();
+const statsRouter = express.Router();
 
-router.get('/users/count', async (req, res) => {
+statsRouter.get('/', async (req, res) => {
   try {
     const totalUsers = await getUserCount();
     res.json({ totalUsers });
@@ -15,4 +15,4 @@ router.get('/users/count', async (req, res) => {
   }
 });
 
-export default router;
+export default statsRouter;

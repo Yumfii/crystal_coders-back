@@ -1,7 +1,11 @@
 // src/controllers/user.js
 
 import createHttpError from 'http-errors';
-import { pumpingWithPatch, userModelsFindById } from '../services/user.js';
+import {
+  deleteUser,
+  pumpingWithPatch,
+  userModelsFindById,
+} from '../services/user.js';
 import { env } from '../utils/env.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
@@ -75,4 +79,24 @@ export const patchUserController = async (req, res, next) => {
     // data: updatedUser.value,
     data: updatedUser,
   });
+};
+
+export const deleteUserController = async (req, res, next) => {
+  // res.send('Delete');
+
+  const { userId } = req.params;
+
+  const deletedContact = await deleteUser(userId, req.user._id);
+  console.log(deleteUser());
+
+  if (
+    !deletedContact
+    // || deletedContact.userId.toString() !== req.user._id.toString()
+  ) {
+    return next(
+      createHttpError(404, 'User not found or you do not have access to it'),
+    );
+  }
+
+  res.status(204).send();
 };

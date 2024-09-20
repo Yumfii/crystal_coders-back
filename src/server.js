@@ -11,6 +11,8 @@ import cookieParser from 'cookie-parser';
 import { UPLOAD_DIR } from './constants/index.js';
 import { swaggerDocs } from './middlewares/swaggerDocs.js';
 import statsRouter from './routers/userCountStats.js';
+// import statsRouter from './routers/userCountStats.js';
+// import authRouter from './routers/auth.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -30,6 +32,8 @@ export const startServer = () => {
   // );
 
   app.use(statsRouter);
+  // app.use(statsRouter);
+  // app.use(authRouter);
   app.use(router);
 
   app.use('/uploads', express.static(UPLOAD_DIR));
