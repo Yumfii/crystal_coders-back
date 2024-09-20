@@ -74,15 +74,10 @@ export const getGoogleOAuthUrlController = (req, res) => {
 };
 
 
-
 export const loginWithGoogleController = async (req, res) => {
   try {
-    const code = req.body.code;
-    res.redirect(`/auth/callback?code=${code}`);
-
     const session = await loginOrSignupWithGoogle(req.body.code);
     setupSession(res, session);
-
     res.json({
       status: 200,
       message: 'Successfully logged in via Google OAuth!',
@@ -92,9 +87,13 @@ export const loginWithGoogleController = async (req, res) => {
     });
   } catch (error) {
     console.error('Error with Google:', error);
-    res.status(500).json({ message: 'Error Google OAuth' });
+    res.status(500).json({
+      message: 'Error Google OAuth',
+      error: error.message,
+    });
   }
 };
+
 
 
 export const requestResetEmailController = async (req, res) => {
