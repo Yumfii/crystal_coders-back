@@ -3,6 +3,7 @@
 import express from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import {
+  deleteUserController,
   getOneUserController,
   patchUserController,
 } from '../controllers/user.js';
@@ -35,5 +36,7 @@ userRouter.patch(
   validateBody(patchUserSchema),
   ctrlWrapper(patchUserController),
 );
+
+userRouter.delete('/:userId', isValidId, ctrlWrapper(deleteUserController));
 
 export default userRouter;

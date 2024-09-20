@@ -1,4 +1,4 @@
-// src/utils/usersCounter.js
+// src/services/usersCounter.js
 
 import { UsersCollection } from '../db/models/user.js';
 
