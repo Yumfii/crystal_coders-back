@@ -7,7 +7,7 @@ import {
   loginUserSchema,
   loginWithGoogleOAuthSchema,
   requestResetEmailSchema,
-  resetPasswordSchema,
+  resetPasswordSchema
 } from '../validation/auth.js';
 import {
   registerUserController,
@@ -18,7 +18,7 @@ import {
   loginWithGoogleController,
   requestResetEmailController,
   resetPasswordController,
-  handleAuthCallback,
+  handleAuthCallback
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 
