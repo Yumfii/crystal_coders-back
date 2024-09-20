@@ -2,7 +2,13 @@
 
 import express from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { registerUserSchema, loginUserSchema, loginWithGoogleOAuthSchema, requestResetEmailSchema, resetPasswordSchema } from '../validation/auth.js';
+import {
+  registerUserSchema,
+  loginUserSchema,
+  loginWithGoogleOAuthSchema,
+  requestResetEmailSchema,
+  resetPasswordSchema,
+} from '../validation/auth.js';
 import {
   registerUserController,
   loginUserController,
@@ -12,7 +18,7 @@ import {
   loginWithGoogleController,
   requestResetEmailController,
   resetPasswordController,
-  handleAuthCallback
+  handleAuthCallback,
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 
@@ -55,6 +61,5 @@ authRouter.post(
 );
 
 authRouter.get('/callback', ctrlWrapper(handleAuthCallback));
-
 
 export default authRouter;

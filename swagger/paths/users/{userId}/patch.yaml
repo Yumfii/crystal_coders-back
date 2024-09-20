@@ -1,8 +1,8 @@
 tags:
   - Users
-summary: Patch contact
+summary: Update User Data
 operationId: patchUserController
-description: 'Patch contact'
+description: 'Update User Data'
 security:
   - bearerAuth: []
 parameters:

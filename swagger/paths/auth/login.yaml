@@ -41,7 +41,11 @@ responses:
               example: Successfully logged in an user!
             data:
               type: object
-              $ref: '../../components/schemas/auth.yaml'
+              properties:
+                accessToken:
+                  type: string
+                  example: 'kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs'
+
   '404':
     $ref: '../../components/responses/404.yaml'
   '401':

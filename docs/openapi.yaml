@@ -16,24 +16,24 @@ tags:
 servers:
   - url: https://crystal-coders-back.onrender.com
   - url: http://127.0.0.1:3000
-  
+
 paths:
-  /register:
+  /auth/register:
     post:
       $ref: '../swagger/paths/auth/register.yaml'
-  /login:
+  /auth/login:
     post:
       $ref: '../swagger/paths/auth/login.yaml'
-  /refresh:
+  /auth/refresh:
     post:
       $ref: '../swagger/paths/auth/refresh.yaml'
-  /logout:
+  /auth/logout:
     post:
       $ref: '../swagger/paths/auth/logout.yaml'
-  /request-reset-email:
+  /auth/request-reset-email:
     post:
       $ref: '../swagger/paths/auth/request-reset-email.yaml'
-  /reset-password:
+  /auth/reset-password:
     post:
       $ref: '../swagger/paths/auth/reset-password.yaml'
   /users/{userId}:
@@ -56,12 +56,12 @@ paths:
       $ref: '../swagger/paths/water/{volumeId}/patch.yaml'
     delete:
       $ref: '../swagger/paths/water/{volumeId}/delete.yaml'
-  /consumption/month:
+  /water/month:
     get:
-      $ref: '../swagger/paths/water/consumption/month/get.yaml'
-  /consumption/day:
+      $ref: '../swagger/paths/water/month/get.yaml'
+  /water/day:
     get:
-      $ref: '../swagger/paths/water/consumption/day/get.yaml'
+      $ref: '../swagger/paths/water/day/get.yaml'
 components:
   securitySchemes:
     bearerAuth:

@@ -1,24 +1,18 @@
 tags:
   - Auth
-summary: Register user
+summary: User Registration
 operationId: registerUserController
-description: 'Register user'
-security:
-  - bearerAuth: []
+description: 'User Registration'
+security: []
 requestBody:
   content:
     application/json:
       schema:
         type: object
         required:
-          - name
           - email
           - password
         properties:
-          name:
-            description: 'User name'
-            type: string
-            example: 'John Doe'
           email:
             description: 'User email'
             type: string
@@ -47,6 +41,9 @@ responses:
               example: Successfully registered a user!
             data:
               type: object
-              $ref: '../../components/schemas/auth.yaml'
+              $ref: ..\..\components\schemas\users.yaml
+            accessToken:
+              type: string
+              example: 'kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs'
   '409':
     $ref: '../../components/responses/409.yaml'

@@ -42,6 +42,6 @@ responses:
               type: number
               description: Total water consumption for the month
   '400':
-    $ref: '..\..\..\..\components\responses\400.yaml'
+    $ref: '..\..\..\components\responses\400.yaml'
   '500':
-    $ref: '..\..\..\..\components\responses\500.yaml'
+    $ref: '..\..\..\components\responses\500.yaml'
