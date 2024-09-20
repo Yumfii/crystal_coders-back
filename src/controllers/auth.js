@@ -78,7 +78,7 @@ export const getGoogleOAuthUrlController = (req, res) => {
 export const loginWithGoogleController = async (req, res) => {
   try {
     const code = req.body.code;
-    res.redirect(`auth/callback?code=${code}`);
+    res.redirect(`/auth/callback?code=${code}`);
   } catch (error) {
     console.error('Error with Google:', error);
     res.status(500).json({ message: 'Error Google OAuth' });
