@@ -3,12 +3,13 @@ import {
   loginUser,
   logoutUser,
   refreshUsersSession,
-  // loginOrSignupWithGoogle,
+  loginOrSignupWithGoogle,
   requestResetToken,
   resetPassword
 } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
+import { validateCode } from '../utils/googleOAuth2.js';
 // import { getUserInfo } from '../services/authService.js';
 
 export const registerUserController = async (req, res) => {
@@ -67,11 +68,11 @@ export const logoutUserController = async (req, res) => {
   res.status(204).send();
 };
 
-export const getGoogleOAuthUrlController = async (req, res) => {
+export const getGoogleOAuthUrlController = (req, res) => {
   const url = generateAuthUrl();
-
   res.redirect(url);
 };
+
 
 
 export const loginWithGoogleController = async (req, res) => {
@@ -113,23 +114,19 @@ const setupSession = (res, session) => {
 
 export const handleAuthCallback = async (req, res) => {
   const code = req.query.code;
-  const redirectUri = 'https://crystal-coders-back.onrender.com/auth/confirm-oauth';
 
   try {
-    const response = await fetch(redirectUri, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code }),
-    });
+    const ticket = await validateCode(code);
+    console.log(code);
 
-    if (response.ok) {
-      res.redirect('/react-homework-template/tracker');
-    } else {
-      res.status(500).send('Error authenticating with Google OAuth');
-    }
+
+    const session = await loginOrSignupWithGoogle(ticket);
+
+    setupSession(res, session);
+
+    res.redirect('http://localhost:3000/tracker');
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error authenticating with Google OAuth');
+    console.error('Error during Google OAuth:', error);
+    res.status(500).send('Error during Google OAuth');
   }
 };
-
