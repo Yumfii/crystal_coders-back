@@ -3,7 +3,7 @@ import {
   loginUser,
   logoutUser,
   refreshUsersSession,
-  loginOrSignupWithGoogle,
+  // loginOrSignupWithGoogle,
   requestResetToken,
   resetPassword
 } from '../services/auth.js';
@@ -77,16 +77,12 @@ export const getGoogleOAuthUrlController = async (req, res) => {
 export const loginWithGoogleController = async (req, res) => {
   try {
     const code = req.body.code;
-    const session = await loginOrSignupWithGoogle(code);
-    setupSession(res, session);
-
-    res.redirect('/tracker');
+    res.redirect(`/callback?code=${code}`);
   } catch (error) {
     console.error('Error with Google:', error);
     res.status(500).json({ message: 'Error Google OAuth' });
   }
 };
-
 
 export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
@@ -136,3 +132,4 @@ export const handleAuthCallback = async (req, res) => {
     res.status(500).send('Error authenticating with Google OAuth');
   }
 };
+
