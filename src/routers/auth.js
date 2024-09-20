@@ -54,7 +54,7 @@ authRouter.post(
   ctrlWrapper(resetPasswordController),
 );
 
-authRouter.get('/auth/callback', ctrlWrapper(handleAuthCallback));
+authRouter.get('/callback', ctrlWrapper(handleAuthCallback));
 
 
 export default authRouter;
