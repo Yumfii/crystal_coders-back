@@ -17,17 +17,25 @@ parameters:
       type: integer
       example: 10
   - in: query
-    name: sortBy
+    name: totalItems
     schema:
-      type: string
-      example: 'name'
-    description: 'Name field can be mentioned. Default value - _id'
+      type: integer
+      example: 0
   - in: query
-    name: sortOrder
+    name: totalPages
     schema:
-      type: string
-      enum: ['asc', 'desc']
-      example: 'asc'
+      type: integer
+      example: 0
+  - in: query
+    name: hasNextPage
+    schema:
+      type: boolean
+      example: true
+  - in: query
+    name: hasPreviousPage
+    schema:
+      type: boolean
+      example: false
 responses:
   '200':
     description: Successfully found volumes!
@@ -47,16 +55,23 @@ responses:
               properties:
                 data:
                   type: array
-                  items:
-                    $ref: '../../components/schemas/volume.yaml'
-                pagination:
-                  type: object
-                  properties:
-                    total:
-                      type: integer
                 page:
                   type: integer
+                  example: 1
                 perPage:
                   type: integer
+                  example: 10
+                totalItems:
+                  type: integer
+                  example: 0
+                totalPages:
+                  type: integer
+                  example: 0
+                hasNextPage:
+                  type: boolean
+                  example: true
+                hasPreviousPage:
+                  type: boolean
+                  example: false
   '401':
     $ref: '../../components/responses/401.yaml'

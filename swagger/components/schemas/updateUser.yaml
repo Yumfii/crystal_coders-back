@@ -1,11 +1,11 @@
 type: object
 required:
-  - userId
+  - name
+  - gender
+  - weight
+  - sportActiveTime
+  - dailyWater
 properties:
-  userId:
-    description: "User's id"
-    type: string
-    example: 66995563aac8191253f0bfd8
   name:
     description: 'User name'
     type: string
@@ -14,10 +14,6 @@ properties:
     description: 'User email'
     type: string
     example: 'johndoe@example.com'
-  password:
-    description: 'Password for registration and login'
-    type: string
-    example: johndoe12345
   gender:
     description: 'User gender'
     type: string

@@ -18,7 +18,7 @@ parameters:
     description: Year of consumption
     schema:
       type: integer
-      example: 2023
+      example: 2024
   - in: query
     name: month
     required: true

@@ -18,7 +18,7 @@ requestBody:
             example: 'johndoe@example.com'
 responses:
   '200':
-    description: password reset
+    description: Password reset
     content:
       application/json:
         schema:
