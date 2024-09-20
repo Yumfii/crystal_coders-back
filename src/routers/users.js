@@ -24,8 +24,8 @@ userRouter.use(authenticate);
 
 userRouter.get(
   '/:userId',
-  // jsonParse,
   isValidId,
+  // jsonParse,
   ctrlWrapper(getOneUserController),
 );
 
