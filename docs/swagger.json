@@ -11,10 +11,10 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:3000"
+      "url": "https://crystal-coders-back.onrender.com"
     },
     {
-      "url": "https://crystal-coders-back.onrender.com"
+      "url": "http://127.0.0.1:3000"
     }
   ],
   "tags": [
@@ -32,35 +32,25 @@
     }
   ],
   "paths": {
-    "/register": {
+    "/auth/register": {
       "post": {
         "tags": [
           "Auth"
         ],
-        "summary": "Register user",
+        "summary": "User Registration",
         "operationId": "registerUserController",
-        "description": "Register user",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "description": "User Registration",
+        "security": [],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "required": [
-                  "name",
                   "email",
                   "password"
                 ],
                 "properties": {
-                  "name": {
-                    "description": "User name",
-                    "type": "string",
-                    "example": "John Doe"
-                  },
                   "email": {
                     "description": "User email",
                     "type": "string",
@@ -99,7 +89,11 @@
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/auth"
+                      "$ref": "#/components/schemas/users"
+                    },
+                    "accessToken": {
+                      "type": "string",
+                      "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
                     }
                   }
                 }
@@ -112,7 +106,7 @@
         }
       }
     },
-    "/login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "Auth"
@@ -169,7 +163,12 @@
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/auth"
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
+                        }
+                      }
                     }
                   }
                 }
@@ -185,7 +184,7 @@
         }
       }
     },
-    "/refresh": {
+    "/auth/refresh": {
       "post": {
         "tags": [
           "Auth"
@@ -272,7 +271,7 @@
         }
       }
     },
-    "/logout": {
+    "/auth/logout": {
       "post": {
         "tags": [
           "Auth"
@@ -326,7 +325,7 @@
         }
       }
     },
-    "/request-reset-email": {
+    "/auth/request-reset-email": {
       "post": {
         "tags": [
           "Auth"
@@ -334,11 +333,7 @@
         "summary": "Request password reset",
         "operationId": "requestResetEmailController",
         "description": "Send reset password email for user",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -393,7 +388,7 @@
         }
       }
     },
-    "/reset-password": {
+    "/auth/reset-password": {
       "post": {
         "tags": [
           "Auth"
@@ -530,9 +525,9 @@
         "tags": [
           "Users"
         ],
-        "summary": "Patch contact",
+        "summary": "Update User Data",
         "operationId": "patchUserController",
-        "description": "Patch contact",
+        "description": "Update User Data",
         "security": [
           {
             "bearerAuth": []
@@ -1013,7 +1008,7 @@
         }
       }
     },
-    "/consumption/month": {
+    "/water/month": {
       "get": {
         "tags": [
           "Watertracking"
@@ -1089,7 +1084,7 @@
         }
       }
     },
-    "/consumption/day": {
+    "/water/day": {
       "get": {
         "tags": [
           "Watertracking"
@@ -1163,63 +1158,6 @@
       }
     },
     "schemas": {
-      "auth": {
-        "type": "object",
-        "required": [
-          "name",
-          "email",
-          "password"
-        ],
-        "properties": {
-          "name": {
-            "description": "User name",
-            "type": "string",
-            "example": "John Doe"
-          },
-          "email": {
-            "description": "User email",
-            "type": "string",
-            "example": "johndoe@example.com"
-          },
-          "password": {
-            "description": "Password for registration and login",
-            "type": "string",
-            "example": "johndoe12345"
-          }
-        }
-      },
-      "session": {
-        "type": "object",
-        "required": [
-          "accessToken",
-          "refreshToken",
-          "accessTokenValidUntil",
-          "refreshTokenValidUntil"
-        ],
-        "properties": {
-          "accessToken": {
-            "description": "Access token",
-            "type": "string"
-          },
-          "refreshToken": {
-            "description": "Refresh token",
-            "type": "string"
-          },
-          "accessTokenValidUntil": {
-            "description": "Access token valid until",
-            "type": "number"
-          },
-          "refreshTokenValidUntil": {
-            "description": "Refresh token valid until",
-            "type": "string"
-          },
-          "userId": {
-            "description": "User id",
-            "type": "string",
-            "example": "65e4decdd286b30065d54af9"
-          }
-        }
-      },
       "users": {
         "type": "object",
         "required": [
@@ -1282,6 +1220,38 @@
             "type": "string",
             "example": "https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg",
             "default": null
+          }
+        }
+      },
+      "session": {
+        "type": "object",
+        "required": [
+          "accessToken",
+          "refreshToken",
+          "accessTokenValidUntil",
+          "refreshTokenValidUntil"
+        ],
+        "properties": {
+          "accessToken": {
+            "description": "Access token",
+            "type": "string"
+          },
+          "refreshToken": {
+            "description": "Refresh token",
+            "type": "string"
+          },
+          "accessTokenValidUntil": {
+            "description": "Access token valid until",
+            "type": "number"
+          },
+          "refreshTokenValidUntil": {
+            "description": "Refresh token valid until",
+            "type": "string"
+          },
+          "userId": {
+            "description": "User id",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
           }
         }
       },

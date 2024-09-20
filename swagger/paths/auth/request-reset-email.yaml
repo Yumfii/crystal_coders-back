@@ -3,8 +3,7 @@ tags:
 summary: Request password reset
 operationId: requestResetEmailController
 description: 'Send reset password email for user'
-security:
-  - bearerAuth: []
+security: []
 requestBody:
   content:
     application/json:
