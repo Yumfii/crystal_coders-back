@@ -22,23 +22,6 @@ userRouter.use(authenticate);
 //   //   limit: '100kb',
 // });
 
-import { getUserCountController } from '../controllers/user.js';
-// import createHttpError from 'http-errors';
-
-// userRouter.get('/count', async (req, res) => {
-//   // res.send('Count');
-
-//   ctrlWrapper(getUserCountController);
-//   // try {
-//   //   const totalUsers = await getUserCount();
-//   //   res.json({ totalUsers });
-//   // } catch {
-//   //   createHttpError(500, 'Failed to count users');
-//   // }
-// });
-
-userRouter.get('/count', ctrlWrapper(getUserCountController));
-
 userRouter.get(
   '/:userId',
   // jsonParse,

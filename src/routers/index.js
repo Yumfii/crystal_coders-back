@@ -5,7 +5,6 @@ import waterRouter from './waterTracking.js';
 import authRouter from './auth.js';
 import usersRouter from './users.js';
 import statsRouter from './userCountStats.js';
-// import statsRouter from './routers/userCountStats.js';
 
 const router = Router();
 
