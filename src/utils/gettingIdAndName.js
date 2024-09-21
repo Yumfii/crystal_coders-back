@@ -14,10 +14,10 @@ export function idAndNameReturn(payload) {
   const file = removeFileExtension(
     partitioningIntoAnArray[partitioningIntoAnArray.length - 1],
   );
-  console.log({
-    name: partitioningIntoAnArray[3],
-    idPhoto: file,
-  });
+  // console.log({
+  //   name: partitioningIntoAnArray[3],
+  //   idPhoto: file,
+  // });
 
   return {
     name: partitioningIntoAnArray[3],
@@ -25,6 +25,6 @@ export function idAndNameReturn(payload) {
   };
 }
 
-// idAndNameReturn(
-//   'https://res.cloudinary.com/dr0xueg6r/image/upload/v1726026334/lhi7v9mcmea8ptk97wvz.jpg',
-// );
+idAndNameReturn(
+  'https://res.cloudinary.com/dr0xueg6r/image/upload/v1726026334/lhi7v9mcmea8ptk97wvz.jpg',
+);

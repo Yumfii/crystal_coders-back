@@ -13,6 +13,8 @@ tags:
     description: Operations related to water tracking.
   - name: Users
     description: Operations for retrieving user data by ID.
+  - name: Count
+    description: Operations to count all users.
 servers:
   - url: https://crystal-coders-back.onrender.com
   - url: http://127.0.0.1:3000
@@ -41,9 +43,9 @@ paths:
       $ref: '../swagger/paths/users/{userId}/get.yaml'
     patch:
       $ref: '../swagger/paths/users/{userId}/patch.yaml'
-  /users/count:
+  /count:
     get:
-      $ref: '../swagger/paths/users/get.yaml'
+      $ref: '../swagger/paths/count/get.yaml'
   /water:
     get:
       $ref: '../swagger/paths/water/get.yaml'

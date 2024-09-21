@@ -52,10 +52,15 @@ export const loginUser = async (payload) => {
 
   const newSessions = createSession();
 
-  return await SessionsCollection.create({
+  const newSessionsObject = await SessionsCollection.create({
     userId: user._id,
     ...newSessions,
   });
+
+  return {
+    newSessionsObject,
+    user,
+  };
 };
 
 export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
