@@ -10,30 +10,6 @@ requestBody:
     multipart/form-data:
       schema:
         type: object
-        required:
-          - accessToken
-          - refreshToken
-          - accessTokenValidUntil
-          - refreshTokenValidUntil
-        properties:
-          accessToken:
-            description: 'Access token'
-            type: string
-            example: 'kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs'
-          refreshToken:
-            description: 'Refresh token'
-            type: string
-            example: 'k8PtoMpBRpQswYvT7iepwwKbrp4zfLJftwuK8wv+'
-          accessTokenValidUntil:
-            description: 'Access token valid until'
-            type: number
-          refreshTokenValidUntil:
-            description: 'Refresh token valid until'
-            type: string
-          userId:
-            description: 'User id'
-            type: string
-            example: 65e4decdd286b30065d54af9
 responses:
   '200':
     description: Refresh session
