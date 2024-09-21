@@ -211,11 +211,13 @@
                 "properties": {
                   "accessToken": {
                     "description": "Access token",
-                    "type": "string"
+                    "type": "string",
+                    "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
                   },
                   "refreshToken": {
                     "description": "Refresh token",
-                    "type": "string"
+                    "type": "string",
+                    "example": "k8PtoMpBRpQswYvT7iepwwKbrp4zfLJftwuK8wv+"
                   },
                   "accessTokenValidUntil": {
                     "description": "Access token valid until",
@@ -258,7 +260,12 @@
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/session"
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "example": "k8PtoMpBRpQswYvT7iepwwKbrp4zfLJftwuK8wv+"
+                        }
+                      }
                     }
                   }
                 }
@@ -355,7 +362,7 @@
         },
         "responses": {
           "200": {
-            "description": "password reset",
+            "description": "Password reset",
             "content": {
               "application/json": {
                 "schema": {
@@ -407,7 +414,8 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "newPassword"
+                  "newPassword",
+                  "token"
                 ],
                 "properties": {
                   "newPassword": {
@@ -415,6 +423,10 @@
                     "type": "string",
                     "format": "password",
                     "example": "johndoe12345"
+                  },
+                  "accessToken": {
+                    "type": "string",
+                    "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
                   }
                 }
               }
@@ -549,7 +561,13 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": [],
+                "required": [
+                  "name",
+                  "gender",
+                  "weight",
+                  "sportActiveTime",
+                  "dailyWater"
+                ],
                 "properties": {
                   "name": {
                     "description": "User name",
@@ -699,23 +717,34 @@
           },
           {
             "in": "query",
-            "name": "sortBy",
+            "name": "totalItems",
             "schema": {
-              "type": "string",
-              "example": "name"
-            },
-            "description": "Name field can be mentioned. Default value - _id"
+              "type": "integer",
+              "example": 0
+            }
           },
           {
             "in": "query",
-            "name": "sortOrder",
+            "name": "totalPages",
             "schema": {
-              "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ],
-              "example": "asc"
+              "type": "integer",
+              "example": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "hasNextPage",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "hasPreviousPage",
+            "schema": {
+              "type": "boolean",
+              "example": false
             }
           }
         ],
@@ -739,24 +768,31 @@
                       "type": "object",
                       "properties": {
                         "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/volume"
-                          }
-                        },
-                        "pagination": {
-                          "type": "object",
-                          "properties": {
-                            "total": {
-                              "type": "integer"
-                            }
-                          }
+                          "type": "array"
                         },
                         "page": {
-                          "type": "integer"
+                          "type": "integer",
+                          "example": 1
                         },
                         "perPage": {
-                          "type": "integer"
+                          "type": "integer",
+                          "example": 10
+                        },
+                        "totalItems": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": false
                         }
                       }
                     }
@@ -906,6 +942,31 @@
             "bearerAuth": []
           }
         ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "volume",
+                  "time"
+                ],
+                "properties": {
+                  "volume": {
+                    "type": "number",
+                    "example": 250,
+                    "default": 250
+                  },
+                  "time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-09-18T12:00:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
         "parameters": [
           {
             "in": "path",
@@ -918,16 +979,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/volume"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successfully patched a volume!",
@@ -1038,7 +1089,7 @@
             "description": "Year of consumption",
             "schema": {
               "type": "integer",
-              "example": 2023
+              "example": 2024
             }
           },
           {
@@ -1172,20 +1223,10 @@
             "type": "string",
             "example": "66995563aac8191253f0bfd8"
           },
-          "name": {
-            "description": "User name",
-            "type": "string",
-            "example": "John Doe"
-          },
           "email": {
             "description": "User email",
             "type": "string",
             "example": "johndoe@example.com"
-          },
-          "password": {
-            "description": "Password for registration and login",
-            "type": "string",
-            "example": "johndoe12345"
           },
           "gender": {
             "description": "User gender",
@@ -1220,52 +1261,29 @@
             "type": "string",
             "example": "https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg",
             "default": null
-          }
-        }
-      },
-      "session": {
-        "type": "object",
-        "required": [
-          "accessToken",
-          "refreshToken",
-          "accessTokenValidUntil",
-          "refreshTokenValidUntil"
-        ],
-        "properties": {
-          "accessToken": {
-            "description": "Access token",
-            "type": "string"
           },
-          "refreshToken": {
-            "description": "Refresh token",
-            "type": "string"
-          },
-          "accessTokenValidUntil": {
-            "description": "Access token valid until",
-            "type": "number"
-          },
-          "refreshTokenValidUntil": {
-            "description": "Refresh token valid until",
-            "type": "string"
-          },
-          "userId": {
-            "description": "User id",
+          "createdAt": {
             "type": "string",
-            "example": "65e4decdd286b30065d54af9"
+            "format": "date-time",
+            "example": "2023-09-18T12:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-18T12:00:00Z"
           }
         }
       },
       "updateUser": {
         "type": "object",
         "required": [
-          "userId"
+          "name",
+          "gender",
+          "weight",
+          "sportActiveTime",
+          "dailyWater"
         ],
         "properties": {
-          "userId": {
-            "description": "User's id",
-            "type": "string",
-            "example": "66995563aac8191253f0bfd8"
-          },
           "name": {
             "description": "User name",
             "type": "string",
@@ -1275,11 +1293,6 @@
             "description": "User email",
             "type": "string",
             "example": "johndoe@example.com"
-          },
-          "password": {
-            "description": "Password for registration and login",
-            "type": "string",
-            "example": "johndoe12345"
           },
           "gender": {
             "description": "User gender",
@@ -1324,20 +1337,30 @@
           "time"
         ],
         "properties": {
-          "volumeId": {
-            "type": "string",
-            "example": "60d5ec49b4dca3576c1c1bde"
-          },
-          "userId": {
-            "type": "string",
-            "example": "60d5ec49b4dca3576c1c1bdf"
-          },
           "volume": {
             "type": "number",
             "example": 250,
             "default": 250
           },
           "time": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-18T12:00:00Z"
+          },
+          "userId": {
+            "type": "string",
+            "example": "60d5ec49b4dca3576c1c1bdf"
+          },
+          "volumeId": {
+            "type": "string",
+            "example": "60d5ec49b4dca3576c1c1bde"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-18T12:00:00Z"
+          },
+          "updatedAt": {
             "type": "string",
             "format": "date-time",
             "example": "2023-09-18T12:00:00Z"

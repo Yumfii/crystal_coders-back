@@ -5,6 +5,23 @@ operationId: patchVolumeController
 description: 'Updates the water volume by the specified ID'
 security:
   - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - volume
+          - time
+        properties:
+          volume:
+            type: number
+            example: 250
+            default: 250
+          time:
+            type: string
+            format: date-time
+            example: '2023-09-18T12:00:00Z'
 parameters:
   - in: path
     name: volumeId
@@ -13,12 +30,6 @@ parameters:
     schema:
       type: string
       example: '60d5ec49b4dca3576c1c1bdf'
-requestBody:
-  required: true
-  content:
-    application/json:
-      schema:
-        $ref: '..\..\..\components\schemas\volume.yaml'
 responses:
   '200':
     description: Successfully patched a volume!

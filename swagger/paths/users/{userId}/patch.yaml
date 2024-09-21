@@ -17,7 +17,12 @@ requestBody:
     multipart/form-data:
       schema:
         type: object
-        required: []
+        required:
+          - name
+          - gender
+          - weight
+          - sportActiveTime
+          - dailyWater
         properties:
           name:
             description: 'User name'
