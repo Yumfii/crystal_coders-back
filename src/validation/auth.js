@@ -19,7 +19,13 @@ export const loginWithGoogleOAuthSchema = Joi.object({
 export const requestResetEmailSchema = Joi.object({
   email: Joi.string().email().required(),
 });
-
+export const requestVerificationSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+export const verificationEmailSchema = Joi.object({
+  email: Joi.string().required(),
+  token: Joi.string().required(),
+});
 export const resetPasswordSchema = Joi.object({
   password: Joi.string().required(),
   token: Joi.string().required(),
