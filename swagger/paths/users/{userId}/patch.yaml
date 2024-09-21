@@ -17,12 +17,6 @@ requestBody:
     multipart/form-data:
       schema:
         type: object
-        required:
-          - name
-          - gender
-          - weight
-          - sportActiveTime
-          - dailyWater
         properties:
           name:
             description: 'User name'
@@ -49,6 +43,11 @@ requestBody:
             type: number
             example: 1.8
             default: 0
+          avatar:
+            description: 'Link to contact photo'
+            type: string
+            example: 'https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg'
+            default: null
 responses:
   '200':
     description: 'Patch contact'

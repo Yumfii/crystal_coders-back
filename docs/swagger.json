@@ -29,6 +29,10 @@
     {
       "name": "Users",
       "description": "Operations for retrieving user data by ID."
+    },
+    {
+      "name": "Count",
+      "description": "Operations to count all users."
     }
   ],
   "paths": {
@@ -201,38 +205,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "accessToken",
-                  "refreshToken",
-                  "accessTokenValidUntil",
-                  "refreshTokenValidUntil"
-                ],
-                "properties": {
-                  "accessToken": {
-                    "description": "Access token",
-                    "type": "string",
-                    "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
-                  },
-                  "refreshToken": {
-                    "description": "Refresh token",
-                    "type": "string",
-                    "example": "k8PtoMpBRpQswYvT7iepwwKbrp4zfLJftwuK8wv+"
-                  },
-                  "accessTokenValidUntil": {
-                    "description": "Access token valid until",
-                    "type": "number"
-                  },
-                  "refreshTokenValidUntil": {
-                    "description": "Refresh token valid until",
-                    "type": "string"
-                  },
-                  "userId": {
-                    "description": "User id",
-                    "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
-                  }
-                }
+                "type": "object"
               }
             }
           }
@@ -414,19 +387,19 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "newPassword",
+                  "password",
                   "token"
                 ],
                 "properties": {
-                  "newPassword": {
+                  "password": {
                     "description": "New password for the user",
                     "type": "string",
                     "format": "password",
                     "example": "johndoe12345"
                   },
-                  "accessToken": {
+                  "token": {
                     "type": "string",
-                    "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NmVlOWUwNzUxMDNlMTgxOTFlM2Y3NzEiLCJlbWFpbCI6InlpYXJvc2hlbmtvLm1heEBnbWFpbC5jb20iLCJpYXQiOjE3MjY5Mjg0MjEsImV4cCI6MTcyNjkyOTMyMX0.ou6V4aeHBvNehxl1dgLI-vUMzn92pfAXjbEu4ua2ZK4"
                   }
                 }
               }
@@ -561,13 +534,6 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "gender",
-                  "weight",
-                  "sportActiveTime",
-                  "dailyWater"
-                ],
                 "properties": {
                   "name": {
                     "description": "User name",
@@ -601,6 +567,12 @@
                     "type": "number",
                     "example": 1.8,
                     "default": 0
+                  },
+                  "avatar": {
+                    "description": "Link to contact photo",
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/dwyxffoux/image/upload/v1726406547/eeyov3w2h3oggofzhveu.jpg",
+                    "default": null
                   }
                 }
               }
@@ -646,19 +618,15 @@
         }
       }
     },
-    "/users/count": {
+    "/count": {
       "get": {
         "tags": [
-          "Users"
+          "Count"
         ],
         "summary": "Get the total number of users",
         "operationId": "totalUsers",
         "description": "Returns the total number of registered users in the database.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [],
         "responses": {
           "200": {
             "description": "Successful response with the total number of users",
