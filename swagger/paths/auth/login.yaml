@@ -42,6 +42,9 @@ responses:
             data:
               type: object
               properties:
+                user:
+                  type: object
+                  $ref: ..\..\components\schemas\users.yaml
                 accessToken:
                   type: string
                   example: 'kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs'
