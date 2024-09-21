@@ -5,7 +5,9 @@ import {
   refreshUsersSession,
   loginOrSignupWithGoogle,
   requestResetToken,
-  resetPassword
+  resetPassword,
+  verifyEmail,
+  sendVerificationEmail
 } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
@@ -100,6 +102,22 @@ export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
   res.json({
     message: 'Reset password email was successfully sent!',
+    status: 200,
+  });
+};
+
+export const requestVerificationController = async (req, res) => {
+  await sendVerificationEmail(req.body);
+  res.json({
+    message: 'The letter was successfully sent for email verification!',
+    status: 200,
+  });
+};
+
+export const verificationController = async (req, res) => {
+  await verifyEmail(req.body);
+  res.json({
+    message: 'Email was successfully confirm!',
     status: 200,
   });
 };

@@ -7,7 +7,9 @@ import {
   loginUserSchema,
   loginWithGoogleOAuthSchema,
   requestResetEmailSchema,
-  resetPasswordSchema
+  resetPasswordSchema,
+  requestVerificationSchema,
+  verificationEmailSchema
 } from '../validation/auth.js';
 import {
   registerUserController,
@@ -18,7 +20,9 @@ import {
   loginWithGoogleController,
   requestResetEmailController,
   resetPasswordController,
-  handleAuthCallback
+  handleAuthCallback,
+  requestVerificationController,
+  verificationController
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 
@@ -53,11 +57,20 @@ authRouter.post(
   validateBody(requestResetEmailSchema),
   ctrlWrapper(requestResetEmailController),
 );
-
+authRouter.post(
+  '/request-verify-email',
+  validateBody(requestVerificationSchema),
+  ctrlWrapper(requestVerificationController),
+);
+authRouter.post(
+  '/verify-email',
+  validateBody(verificationEmailSchema),
+  ctrlWrapper(verificationController),
+);
 authRouter.post(
   '/reset-password',
   validateBody(resetPasswordSchema),
-  ctrlWrapper(resetPasswordController),
+  ctrlWrapper(verificationController),
 );
 
 authRouter.get('/callback', ctrlWrapper(handleAuthCallback));
