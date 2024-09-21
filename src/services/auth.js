@@ -212,7 +212,7 @@ const templateSource = (await fs.readFile(verificationEmailTemplatePath)).toStri
 const template = handlebars.compile(templateSource);
 const html = template({
   name: user.name,
-  link: `${env('APP_DOMAIN')}/verify-email?token=${verificationToken}`,
+  link: `${env('APP_DOMAIN')}/tracker?token=${verificationToken}`,
 });
 
 await sendEmail({
