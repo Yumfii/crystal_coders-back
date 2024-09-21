@@ -1,10 +1,9 @@
 tags:
-  - Users
+  - Count
 summary: Get the total number of users
 operationId: totalUsers
 description: Returns the total number of registered users in the database.
-security:
-  - bearerAuth: []
+security: []
 responses:
   '200':
     description: Successful response with the total number of users

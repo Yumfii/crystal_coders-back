@@ -8,6 +8,7 @@ export const getUserCountController = async (req, res, next) => {
   res.status(200).send({
     status: 200,
     message: 'All users count',
+
     data: totalUsers,
   });
 };

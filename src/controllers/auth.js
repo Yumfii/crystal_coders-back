@@ -16,28 +16,29 @@ import { generateAuthUrl } from '../utils/googleOAuth2.js';
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
-  const session = await loginUser(req.body);
-  setupSession(res, session);
+  const { newSessionsObject } = await loginUser(req.body);
+  setupSession(res, newSessionsObject);
 
   res.status(201).json({
     status: 201,
     message: 'Successfully registered a user! Please verefy your email!',
     data: {
       user,
-      accessToken: session.accessToken,
+      accessToken: newSessionsObject.accessToken,
     },
   });
 };
 
 export const loginUserController = async (req, res) => {
-  const session = await loginUser(req.body);
-  setupSession(res, session);
+  const { newSessionsObject, user } = await loginUser(req.body);
+  setupSession(res, newSessionsObject);
 
   res.json({
     status: 200,
     message: 'Successfully logged in a user!',
     data: {
-      accessToken: session.accessToken,
+      user,
+      accessToken: newSessionsObject.accessToken,
     },
   });
 };
@@ -75,7 +76,6 @@ export const getGoogleOAuthUrlController = (req, res) => {
   res.redirect(url);
 };
 
-
 export const loginWithGoogleController = async (req, res) => {
   try {
     const session = await loginOrSignupWithGoogle(req.body.code);
@@ -95,8 +95,6 @@ export const loginWithGoogleController = async (req, res) => {
     });
   }
 };
-
-
 
 export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
@@ -155,4 +153,3 @@ export const handleAuthCallback = async (req, res) => {
     res.status(500).send('Error during Google OAuth');
   }
 };
-
