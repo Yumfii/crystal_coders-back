@@ -87,12 +87,8 @@ export const deleteUserController = async (req, res, next) => {
   const { userId } = req.params;
 
   const deletedContact = await deleteUser(userId, req.user._id);
-  console.log(deleteUser());
 
-  if (
-    !deletedContact
-    // || deletedContact.userId.toString() !== req.user._id.toString()
-  ) {
+  if (!deletedContact) {
     return next(
       createHttpError(404, 'User not found or you do not have access to it'),
     );
