@@ -18,7 +18,8 @@ export const startServer = () => {
 
   const corsOptions = {
     origin: [
-      'https://crystal-coders-front.vercel.app/',
+      'https://crystal-coders-back.onrender.com',
+      'https://crystal-coders-front.vercel.app',
       'http://localhost:5173',
     ],
     credentials: true,
