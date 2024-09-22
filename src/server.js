@@ -16,8 +16,13 @@ const PORT = Number(env('PORT', '3000'));
 export const startServer = () => {
   const app = express();
 
+  const corsOptions = {
+    origin: 'http://localhost:5173/', // Домен фронтенда
+    credentials: true, // Разрешить отправку куки
+  };
+
   app.use(express.json());
-  app.use(cors());
+  app.use(cors(corsOptions));
   app.use(cookieParser());
 
   // app.use(
