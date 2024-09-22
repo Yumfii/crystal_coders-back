@@ -199,6 +199,7 @@ export const resetPassword = async (payload) => {
 export const sendVerificationEmail = async(user)=>{
 
   const email = user.email;
+  const name = user.name && 'User';
 
 const verificationToken = jwt.sign({
   sub: user._id,
@@ -216,7 +217,7 @@ const templateSource = (await fs.readFile(verificationEmailTemplatePath)).toStri
 
 const template = handlebars.compile(templateSource);
 const html = template({
-  name: user.name,
+  name: name,
   link: `${env('APP_DOMAIN')}/verify-email?token=${verificationToken}`,
 });
 
