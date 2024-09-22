@@ -29,10 +29,12 @@ export const registerUser = async (payload) => {
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
-  return await UsersCollection.create({
+  const newUser =  await UsersCollection.create({
     ...payload,
     password: encryptedPassword,
   });
+  await sendVerificationEmail(newUser);
+  return newUser;
 };
 
 export const loginUser = async (payload) => {
@@ -201,3 +203,66 @@ export const resetPassword = async (payload) => {
     { password: encryptedPassword },
   );
 };
+
+export const sendVerificationEmail = async(user)=>{
+
+  const email = user.email;
+  const name = user.name && 'User';
+
+const verificationToken = jwt.sign({
+  sub: user._id,
+  email,
+},
+env('JWT_SECRET'),
+{
+  expiresIn: '15m',
+},
+);
+
+const verificationEmailTemplatePath = path.join(TEMPLATES_DIR, 'verification-mail.html',);
+
+const templateSource = (await fs.readFile(verificationEmailTemplatePath)).toString();
+
+const template = handlebars.compile(templateSource);
+const html = template({
+  name: name,
+  link: `${env('APP_DOMAIN')}/verify-email?token=${verificationToken}`,
+});
+
+await sendEmail({
+  from: env(SMTP.SMTP_FROM),
+  to: email,
+  subject: 'Verify your email address',
+  html,
+});
+
+};
+
+
+export const verifyEmail = async (payload) => {
+  let entries;
+
+  try {
+    entries = jwt.verify(payload.token, env('JWT_SECRET'));
+  } catch (err) {
+    if (err instanceof Error) throw createHttpError(401, err.message);
+    throw err;
+  }
+
+  const user = await UsersCollection.findOne({
+    email: entries.email
+  });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const isVerified = true;
+
+  await UsersCollection.updateOne(
+    { _id: user._id },
+    { $set: {isVerified}},
+  );
+};
+
+

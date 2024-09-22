@@ -6,7 +6,8 @@ const usersSchema = new Schema(
   {
     name: {
       type: String,
-      required: false,
+      default: 'User',
+      required: true,
     },
     email: {
       type: String,
@@ -43,6 +44,11 @@ const usersSchema = new Schema(
       default: null,
       required: false,
     },
+    isVerified:{
+      type: String,
+      default: false,
+      required: true,
+    }
   },
   {
     timestamps: true,
