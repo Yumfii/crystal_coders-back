@@ -9,7 +9,7 @@ import {
   requestResetEmailSchema,
   resetPasswordSchema,
   requestVerificationSchema,
-  verificationEmailSchema
+  verificationEmailSchema,
 } from '../validation/auth.js';
 import {
   registerUserController,
@@ -19,11 +19,11 @@ import {
   getGoogleOAuthUrlController,
   loginWithGoogleController,
   requestResetEmailController,
-  resetPasswordController,
+  // resetPasswordController,
   handleAuthCallback,
   getSessionsController,
   requestVerificationController,
-  verificationController
+  verificationController,
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 

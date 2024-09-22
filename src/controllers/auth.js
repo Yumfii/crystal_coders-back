@@ -8,7 +8,7 @@ import {
   resetPassword,
   getSessions,
   verifyEmail,
-  sendVerificationEmail
+  sendVerificationEmail,
 } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
