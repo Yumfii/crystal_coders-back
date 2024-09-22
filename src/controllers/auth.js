@@ -6,6 +6,7 @@ import {
   loginOrSignupWithGoogle,
   requestResetToken,
   resetPassword,
+  getSessions,
   verifyEmail,
   sendVerificationEmail
 } from '../services/auth.js';
@@ -57,6 +58,19 @@ export const refreshUserSessionController = async (req, res) => {
     data: {
       accessToken: session.accessToken,
     },
+  });
+};
+
+export const getSessionsController = async (req, res, next) => {
+  const getSessionId = await getSessions({
+    sessionId: req.cookies.sessionId,
+    refreshToken: req.cookies.refreshToken,
+  });
+
+  res.status(200).send({
+    status: 200,
+    message: 'Get session user',
+    data: getSessionId,
   });
 };
 

@@ -21,6 +21,7 @@ import {
   requestResetEmailController,
   resetPasswordController,
   handleAuthCallback,
+  getSessionsController,
   requestVerificationController,
   verificationController
 } from '../controllers/auth.js';
@@ -41,6 +42,8 @@ authRouter.post(
 );
 
 authRouter.post('/refresh', ctrlWrapper(refreshUserSessionController));
+
+authRouter.get('/session', ctrlWrapper(getSessionsController));
 
 authRouter.post('/logout', ctrlWrapper(logoutUserController));
 
