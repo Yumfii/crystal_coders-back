@@ -93,11 +93,16 @@
                     },
                     "data": {
                       "type": "object",
-                      "$ref": "#/components/schemas/users"
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "$ref": "#/components/schemas/users"
+                        },
+                        "accessToken": {
+                          "type": "string",
+                          "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
+                        }
+                      }
                     }
                   }
                 }
@@ -168,6 +173,10 @@
                     "data": {
                       "type": "object",
                       "properties": {
+                        "user": {
+                          "type": "object",
+                          "$ref": "#/components/schemas/users"
+                        },
                         "accessToken": {
                           "type": "string",
                           "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
@@ -603,6 +612,54 @@
                     "data": {
                       "type": "object",
                       "$ref": "#/components/schemas/updateUser"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete User by id",
+        "operationId": "deleteUserController",
+        "description": "Delete User by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "66a655d1c0ffd1fd8a7e9b84"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully, no content returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 204
                     }
                   }
                 }
@@ -1180,13 +1237,13 @@
       "users": {
         "type": "object",
         "required": [
-          "userId",
+          "_id",
           "name",
           "email",
           "password"
         ],
         "properties": {
-          "userId": {
+          "_id": {
             "description": "User's id",
             "type": "string",
             "example": "66995563aac8191253f0bfd8"

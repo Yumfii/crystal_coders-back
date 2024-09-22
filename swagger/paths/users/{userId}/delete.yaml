@@ -1,0 +1,29 @@
+tags:
+  - Users
+summary: Delete User by id
+operationId: deleteUserController
+description: 'Delete User by id'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: userId
+    required: true
+    schema:
+      type: string
+      example: '66a655d1c0ffd1fd8a7e9b84'
+responses:
+  '204':
+    description: 'User deleted successfully, no content returned.'
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 204
+  '401':
+    $ref: '../../../components/responses/401.yaml'
+  '404':
+    $ref: '..\..\..\components\responses\404.yaml'
