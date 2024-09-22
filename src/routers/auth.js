@@ -7,7 +7,7 @@ import {
   loginUserSchema,
   loginWithGoogleOAuthSchema,
   requestResetEmailSchema,
-  resetPasswordSchema
+  resetPasswordSchema,
 } from '../validation/auth.js';
 import {
   registerUserController,
@@ -18,7 +18,8 @@ import {
   loginWithGoogleController,
   requestResetEmailController,
   resetPasswordController,
-  handleAuthCallback
+  handleAuthCallback,
+  getSessionsController,
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 
@@ -37,6 +38,8 @@ authRouter.post(
 );
 
 authRouter.post('/refresh', ctrlWrapper(refreshUserSessionController));
+
+authRouter.get('/session', ctrlWrapper(getSessionsController));
 
 authRouter.post('/logout', ctrlWrapper(logoutUserController));
 
