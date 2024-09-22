@@ -131,7 +131,7 @@ export const handleAuthCallback = async (req, res) => {
 
     setupSession(res, session);
 
-    res.redirect('http://localhost:3000/tracker');
+    res.redirect('http://localhost:5173/tracker');
   } catch (error) {
     console.error('Error during Google OAuth:', error);
     res.status(500).send('Error during Google OAuth');
