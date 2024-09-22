@@ -23,7 +23,6 @@ export const requestVerificationSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 export const verificationEmailSchema = Joi.object({
-  email: Joi.string().required(),
   token: Joi.string().required(),
 });
 export const resetPasswordSchema = Joi.object({
