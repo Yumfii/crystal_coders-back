@@ -5,7 +5,7 @@ import {
   refreshUsersSession,
   loginOrSignupWithGoogle,
   requestResetToken,
-  resetPassword
+  resetPassword,
 } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
@@ -73,7 +73,6 @@ export const getGoogleOAuthUrlController = (req, res) => {
   res.redirect(url);
 };
 
-
 export const loginWithGoogleController = async (req, res) => {
   try {
     const session = await loginOrSignupWithGoogle(req.body.code);
@@ -93,8 +92,6 @@ export const loginWithGoogleController = async (req, res) => {
     });
   }
 };
-
-
 
 export const requestResetEmailController = async (req, res) => {
   await requestResetToken(req.body.email);
@@ -131,10 +128,9 @@ export const handleAuthCallback = async (req, res) => {
 
     setupSession(res, session);
 
-    res.redirect('http://localhost:5173/tracker');
+    res.redirect('https://crystal-coders-front.vercel.app/tracker');
   } catch (error) {
     console.error('Error during Google OAuth:', error);
     res.status(500).send('Error during Google OAuth');
   }
 };
-
