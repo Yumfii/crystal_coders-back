@@ -17,8 +17,13 @@ export const startServer = () => {
   const app = express();
 
   const corsOptions = {
-    origin: 'http://localhost:5173/', // Домен фронтенда
-    credentials: true, // Разрешить отправку куки
+    origin: [
+      'http://localhost:5173',
+      'https://crystal-coders-back.onrender.com',
+    ],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   };
 
   app.use(express.json());
