@@ -26,6 +26,7 @@ export const registerUserController = async (req, res) => {
     data: {
       user,
       accessToken: newSessionsObject.accessToken,
+      sessionId: newSessionsObject._id,
     },
   });
 };
@@ -40,15 +41,19 @@ export const loginUserController = async (req, res) => {
     data: {
       user,
       accessToken: newSessionsObject.accessToken,
+      sessionId: newSessionsObject._id,
     },
   });
 };
 
 export const refreshUserSessionController = async (req, res) => {
+  // console.log('YES');
   const session = await refreshUsersSession({
     sessionId: req.cookies.sessionId,
     refreshToken: req.cookies.refreshToken,
   });
+
+  console.log(session);
 
   setupSession(res, session);
 
@@ -57,6 +62,7 @@ export const refreshUserSessionController = async (req, res) => {
     message: 'Successfully refreshed a session!',
     data: {
       accessToken: session.accessToken,
+      userId: session.userId,
     },
   });
 };
@@ -144,13 +150,13 @@ export const resetPasswordController = async (req, res) => {
 
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
-    // httpOnly: true,
+    httpOnly: true,
     sameSite: 'None', // Устанавливаем SameSite=None для кросс-доменных запросов
     secure: true, // Необходимо для работы SameSite=None (требует HTTPS)
     expires: new Date(Date.now() + THIRTY_DAYS),
   });
   res.cookie('sessionId', session._id, {
-    // httpOnly: true,
+    httpOnly: true,
     sameSite: 'None', // Устанавливаем SameSite=None для кросс-доменных запросов
     secure: true, // Необходимо для работы SameSite=None (требует HTTPS)
     expires: new Date(Date.now() + THIRTY_DAYS),
