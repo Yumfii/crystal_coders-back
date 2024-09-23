@@ -29,7 +29,7 @@ export const registerUser = async (payload) => {
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
-  const newUser =  await UsersCollection.create({
+  const newUser = await UsersCollection.create({
     ...payload,
     password: encryptedPassword,
   });
@@ -204,40 +204,43 @@ export const resetPassword = async (payload) => {
   );
 };
 
-export const sendVerificationEmail = async(user)=>{
-
+export const sendVerificationEmail = async (user) => {
   const email = user.email;
   const name = user.name && 'User';
 
-const verificationToken = jwt.sign({
-  sub: user._id,
-  email,
-},
-env('JWT_SECRET'),
-{
-  expiresIn: '15m',
-},
-);
+  const verificationToken = jwt.sign(
+    {
+      sub: user._id,
+      email,
+    },
+    env('JWT_SECRET'),
+    {
+      expiresIn: '15m',
+    },
+  );
 
-const verificationEmailTemplatePath = path.join(TEMPLATES_DIR, 'verification-mail.html',);
+  const verificationEmailTemplatePath = path.join(
+    TEMPLATES_DIR,
+    'verification-mail.html',
+  );
 
-const templateSource = (await fs.readFile(verificationEmailTemplatePath)).toString();
+  const templateSource = (
+    await fs.readFile(verificationEmailTemplatePath)
+  ).toString();
 
-const template = handlebars.compile(templateSource);
-const html = template({
-  name: name,
-  link: `${env('APP_DOMAIN')}/verify-email?token=${verificationToken}`,
-});
+  const template = handlebars.compile(templateSource);
+  const html = template({
+    name: name,
+    link: `${env('APP_DOMAIN')}/verify-email?token=${verificationToken}`,
+  });
 
-await sendEmail({
-  from: env(SMTP.SMTP_FROM),
-  to: email,
-  subject: 'Verify your email address',
-  html,
-});
-
+  await sendEmail({
+    from: env(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Verify your email address',
+    html,
+  });
 };
-
 
 export const verifyEmail = async (payload) => {
   let entries;
@@ -250,7 +253,7 @@ export const verifyEmail = async (payload) => {
   }
 
   const user = await UsersCollection.findOne({
-    email: entries.email
+    email: entries.email,
   });
 
   if (!user) {
@@ -259,10 +262,5 @@ export const verifyEmail = async (payload) => {
 
   const isVerified = true;
 
-  await UsersCollection.updateOne(
-    { _id: user._id },
-    { $set: {isVerified}},
-  );
+  await UsersCollection.updateOne({ _id: user._id }, { $set: { isVerified } });
 };
-
-
