@@ -128,3 +128,35 @@ export const getWaterConsumptionForDay = async (userId, date) => {
     return { error: 'Error fetching water consumption for day' };
   }
 };
+
+export const getRemainingWaterConsumption = async (userId, date, dailyNorm) => {
+  if (!date || !userId) {
+    throw createHttpError(400, 'Date and userId are required');
+  }
+
+  const startOfDay = new Date(date);
+  const endOfDay = new Date(startOfDay);
+  endOfDay.setDate(startOfDay.getDate() + 1);
+
+  try {
+    const volumes = await WaterTrackingCollection.find({
+      userId,
+      createdAt: { $gte: startOfDay, $lt: endOfDay },
+    });
+
+    const totalConsumption = volumes.reduce(
+      (sum, volume) => sum + volume.volume,
+      0,
+    );
+
+    const remainingVolume = dailyNorm - totalConsumption;
+    const remainingPercentage = ((remainingVolume / dailyNorm) * 100).toFixed(
+      2,
+    );
+
+    return { totalConsumption, remainingVolume, remainingPercentage };
+  } catch (error) {
+    console.error('Error fetching remaining water consumption:', error);
+    throw error;
+  }
+};
