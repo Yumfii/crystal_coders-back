@@ -158,7 +158,7 @@ export const getWaterRemainingPercentageController = async (req, res) => {
   const { _id: userId } = req.user;
   const { date } = req.query;
 
-  const dailyNorm = 2000;
+  const dailyNorm = 1500;
 
   try {
     const { totalConsumption, remainingVolume } =
