@@ -19,6 +19,7 @@ import {
   patchVolumeController,
   getWaterForMonthController,
   getWaterForDayController,
+  getWaterRemainingPercentageController,
 } from '../controllers/waterTracking.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
@@ -47,5 +48,10 @@ router.delete(
 
 router.get('/consumption/month', ctrlWrapper(getWaterForMonthController));
 router.get('/consumption/day', ctrlWrapper(getWaterForDayController));
+
+router.get(
+  '/consumption/remaining',
+  ctrlWrapper(getWaterRemainingPercentageController),
+);
 
 export default router;

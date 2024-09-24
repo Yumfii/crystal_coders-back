@@ -1,6 +1,5 @@
 // src/controllers/waterTracking.js
 
-
 import createHttpError from 'http-errors';
 import {
   getAllVolumes,
@@ -10,6 +9,7 @@ import {
   updateVolume,
   getWaterConsumptionForMonth,
   getWaterConsumptionForDay,
+  getRemainingWaterConsumption,
 } from '../services/waterTracking.js';
 
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -145,12 +145,42 @@ export const getWaterForDayController = async (req, res) => {
     const { userId, date } = req.query;
     console.log(`Received request for userId ${userId} on date ${date}`);
 
-    // Assuming getWaterConsumptionForDay is a function that fetches water consumption data
     const waterConsumption = await getWaterConsumptionForDay(userId, date);
 
     res.status(200).json(waterConsumption);
   } catch (error) {
     console.error('Error fetching water consumption:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getWaterRemainingPercentageController = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { date } = req.query;
+
+  const dailyNorm = 2000;
+
+  try {
+    const { totalConsumption, remainingVolume } =
+      await getRemainingWaterConsumption(userId, date, dailyNorm);
+
+    const consumedPercentage = ((totalConsumption / dailyNorm) * 100).toFixed(
+      2,
+    );
+    const remainingPercentage = ((remainingVolume / dailyNorm) * 100).toFixed(
+      2,
+    );
+
+    res.json({
+      date,
+      totalConsumption,
+      remainingVolume,
+      consumedPercentage,
+      remainingPercentage,
+      dailyNorm,
+    });
+  } catch (error) {
+    console.error('Error fetching remaining water percentage:', error.message);
     res.status(500).json({ error: error.message });
   }
 };
