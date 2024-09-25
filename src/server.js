@@ -21,6 +21,7 @@ export const startServer = () => {
       'https://crystal-coders-back.onrender.com',
       'https://crystal-coders-front.vercel.app',
       'http://localhost:5173',
+      'https://crystal-coders.netlify.app',
     ],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
