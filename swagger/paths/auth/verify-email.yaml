@@ -1,0 +1,38 @@
+tags:
+  - Auth
+summary: Verify user email address
+operationId: verificationController
+description: Confirms the user's email address using a verification token.
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          token:
+            type: string
+            example: your_verification_token_here
+        required:
+          - token
+responses:
+  '200':
+    description: Email successfully confirmed
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Email was successfully confirm!
+            status:
+              type: integer
+              example: 200
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '404':
+    $ref: '../../components/responses/404.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

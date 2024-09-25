@@ -180,6 +180,10 @@
                         "accessToken": {
                           "type": "string",
                           "example": "kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs"
+                        },
+                        "sessionId": {
+                          "type": "string",
+                          "example": "66f412aee3d144925064d5d8"
                         }
                       }
                     }
@@ -256,6 +260,86 @@
           },
           "401": {
             "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/auth/session": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Get User Session",
+        "operationId": "getSessionsController",
+        "description": "Отримати деталі сесії користувача через кукі sessionId і refreshToken",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "cookie",
+            "name": "sessionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Unique session identifier stored in a cookie"
+          },
+          {
+            "in": "cookie",
+            "name": "refreshToken",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Refresh token for the current user session stored in a cookie."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of the user session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessionId": {
+                      "type": "string",
+                      "example": "66f4117f3a898b3b97247386"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "example": "66edd912a54e0ffca593c74f"
+                    },
+                    "refreshToken": {
+                      "type": "string",
+                      "example": "0vTYqzBidYo+d0aL1H1cH5HynXqX+H4bFYCawqVz"
+                    },
+                    "expiresAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-09-25T13:35:58.600Z"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-09-25T13:35:58.600Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
           }
         }
       }
@@ -373,6 +457,126 @@
           },
           "401": {
             "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/auth/request-verify-email": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Send email verification link to the user",
+        "operationId": "requestVerificationController",
+        "description": "Sends a verification email with a token to the user for email verification.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "johndoe@example.com"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email successfully sent for verification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "The letter was successfully sent for email verification!"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/verify-email": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Verify user email address",
+        "operationId": "verificationController",
+        "description": "Confirms the user's email address using a verification token.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "your_verification_token_here"
+                  }
+                },
+                "required": [
+                  "token"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email successfully confirmed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email was successfully confirm!"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
           }
         }
       }
@@ -1224,6 +1428,56 @@
           }
         }
       }
+    },
+    "/water/remaining": {
+      "get": {
+        "tags": [
+          "Watertracking"
+        ],
+        "summary": "Get Remaining Water Consumption Percentage.",
+        "operationId": "getWaterRemainingPercentageController",
+        "description": "Get Remaining Water Consumption Percentage.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the consumption percentage and the remaining water volume.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/WaterConsumptionResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1389,6 +1643,39 @@
             "type": "string",
             "format": "date-time",
             "example": "2023-09-18T12:00:00Z"
+          }
+        }
+      },
+      "WaterConsumptionResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-09-24"
+          },
+          "totalConsumption": {
+            "type": "number",
+            "example": 1102
+          },
+          "remainingVolume": {
+            "type": "number",
+            "example": 898
+          },
+          "consumedPercentage": {
+            "type": "string",
+            "example": "1102 '55.10'"
+          },
+          "remainingPercentage": {
+            "type": "string",
+            "example": "44.90"
+          },
+          "dailyNorm": {
+            "type": "number",
+            "example": 2000
           }
         }
       }

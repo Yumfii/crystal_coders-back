@@ -29,12 +29,21 @@ paths:
   /auth/refresh:
     post:
       $ref: '../swagger/paths/auth/refresh.yaml'
+  /auth/session:
+    get:
+      $ref: '../swagger/paths/auth/session.yaml'
   /auth/logout:
     post:
       $ref: '../swagger/paths/auth/logout.yaml'
   /auth/request-reset-email:
     post:
       $ref: '../swagger/paths/auth/request-reset-email.yaml'
+  /auth/request-verify-email:
+    post:
+      $ref: '../swagger/paths/auth/request-verify-email.yaml'
+  /auth/verify-email:
+    post:
+      $ref: '../swagger/paths/auth/verify-email.yaml'
   /auth/reset-password:
     post:
       $ref: '../swagger/paths/auth/reset-password.yaml'
@@ -66,6 +75,9 @@ paths:
   /water/day:
     get:
       $ref: '../swagger/paths/water/day/get.yaml'
+  /water/remaining:
+    get:
+      $ref: '../swagger/paths/water/remaining/get.yaml'
 components:
   securitySchemes:
     bearerAuth:

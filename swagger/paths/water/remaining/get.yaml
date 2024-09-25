@@ -1,0 +1,29 @@
+tags:
+  - Watertracking
+summary: Get Remaining Water Consumption Percentage.
+operationId: getWaterRemainingPercentageController
+description: 'Get Remaining Water Consumption Percentage.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: query
+    name: date
+    schema:
+      type: string
+      format: date
+    required: true
+responses:
+  '200':
+    description: Successful response with the consumption percentage and the remaining water volume.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              $ref: '../../../components/schemas/WaterConsumptionResponse.yaml'
+  '400':
+    $ref: '..\..\..\components\responses\400.yaml'
+  '500':
+    $ref: '..\..\..\components\responses\500.yaml'

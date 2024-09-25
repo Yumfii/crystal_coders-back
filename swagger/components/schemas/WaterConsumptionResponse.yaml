@@ -1,0 +1,23 @@
+type: object
+required:
+  - data
+properties:
+    date:
+      type: string
+      format: date
+      example: '2024-09-24'
+    totalConsumption:
+      type: number
+      example: 1102
+    remainingVolume:
+      type: number
+      example: 898
+    consumedPercentage:
+      type: string
+      example: 1102 '55.10'
+    remainingPercentage:
+      type: string
+      example: '44.90'
+    dailyNorm:
+      type: number
+      example: 2000
