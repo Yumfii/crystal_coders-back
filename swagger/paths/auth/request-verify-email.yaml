@@ -1,0 +1,37 @@
+tags:
+  - Auth
+summary: Send email verification link to the user
+operationId: requestVerificationController
+description: Sends a verification email with a token to the user for email verification.
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+            example: johndoe@example.com
+        required:
+          - email
+responses:
+  '200':
+    description: Email successfully sent for verification
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: The letter was successfully sent for email verification!
+            status:
+              type: integer
+              example: 200
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

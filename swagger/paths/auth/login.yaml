@@ -48,6 +48,9 @@ responses:
                 accessToken:
                   type: string
                   example: 'kk0okRUQtfXT4vPHMNmLu8Eqh9q21rda1jNXDpIs'
+                sessionId:
+                  type: string
+                  example: '66f412aee3d144925064d5d8'
 
   '404':
     $ref: '../../components/responses/404.yaml'
